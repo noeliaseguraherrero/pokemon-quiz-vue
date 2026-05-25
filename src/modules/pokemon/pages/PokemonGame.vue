@@ -7,7 +7,6 @@
   <section v-else class="game-root">
     <div class="pokeball-bg"></div>
 
-    <!-- TUTORIAL -->
     <transition name="fade">
       <div v-if="showTutorial" class="tutorial-overlay">
         <div class="tutorial-box">
@@ -15,9 +14,9 @@
             <span v-for="i in tutorialSteps.length" :key="i"
               class="tut-dot" :class="{ active: tutStep === i - 1 }"></span>
           </div>
-          <div class="tut-icon">{{ tutorialSteps[tutStep].icon }}</div>
-          <div class="tut-title">{{ tutorialSteps[tutStep].title }}</div>
-          <div class="tut-desc">{{ tutorialSteps[tutStep].desc }}</div>
+          <div class="tut-icon">{{ tutorialSteps[tutStep]?.icon }}</div>
+          <div class="tut-title">{{ tutorialSteps[tutStep]?.title }}</div>
+          <div class="tut-desc">{{ tutorialSteps[tutStep]?.desc }}</div>
           <div class="tut-btns">
             <button v-if="tutStep > 0" class="tut-btn secondary" @click="tutStep--">← ATRÁS</button>
             <button class="tut-btn" @click="tutNext">
@@ -28,7 +27,6 @@
       </div>
     </transition>
 
-    <!-- GAME OVER -->
     <transition name="pop">
       <div v-if="isGameOver" class="gameover-overlay">
         <div class="gameover-box">
@@ -45,7 +43,6 @@
       </div>
     </transition>
 
-    <!-- LEVEL UP -->
     <transition name="pop">
       <div v-if="showLevelUp" class="levelup-overlay">
         <div class="levelup-box">
@@ -56,7 +53,6 @@
       </div>
     </transition>
 
-    <!-- NUEVA INSIGNIA -->
     <transition name="slide-right">
       <div v-if="newBadge" class="badge-toast">
         <span class="badge-toast-icon">{{ newBadge.icon }}</span>
@@ -67,12 +63,10 @@
       </div>
     </transition>
 
-    <!-- MENÚ LATERAL -->
     <aside class="side-menu" :class="{ open: menuOpen }">
       <div class="side-content">
         <div class="side-title">OPCIONES</div>
 
-        <!-- Dificultad -->
         <div class="difficulty-section">
           <div class="section-label">DIFICULTAD</div>
           <button v-for="diff in difficulties" :key="diff.value"
@@ -89,7 +83,6 @@
 
         <div class="side-divider"></div>
 
-        <!-- Modos -->
         <div class="section-label">MODOS</div>
         <div class="mode-row">
           <span class="mode-label">⏱ Contrarreloj</span>
@@ -106,7 +99,6 @@
 
         <div class="side-divider"></div>
 
-        <!-- Estadísticas -->
         <div class="side-stats">
           <div class="section-label">ESTADÍSTICAS</div>
           <div class="stat-row"><span>Victorias</span><span class="stat-val green">{{ wins }}</span></div>
@@ -118,7 +110,6 @@
 
         <div class="side-divider"></div>
 
-        <!-- Records -->
         <div class="section-label">🏆 RÉCORDS</div>
         <div class="stat-row"><span>Mejor racha</span><span class="stat-val yellow">{{ records.bestStreak }}</span></div>
         <div class="stat-row"><span>Nivel máx.</span><span class="stat-val yellow">{{ records.bestLevel }}</span></div>
@@ -126,7 +117,6 @@
 
         <div class="side-divider"></div>
 
-        <!-- Insignias -->
         <div class="section-label">🎖 INSIGNIAS</div>
         <div class="badges-grid">
           <div v-for="badge in badges" :key="badge.id"
@@ -139,18 +129,16 @@
 
         <div class="side-divider"></div>
 
-        <button class="reset-btn"  @click="handleReset">↺ REINICIAR</button>
-        <button class="home-btn"   @click="handleGoIntro">⌂ MENÚ PRINCIPAL</button>
+        <button class="reset-btn"   @click="handleReset">↺ REINICIAR</button>
+        <button class="home-btn"    @click="handleGoIntro">⌂ MENÚ PRINCIPAL</button>
         <button class="tut-reopen" @click="openTutorial">? TUTORIAL</button>
       </div>
     </aside>
 
     <div v-if="menuOpen" class="menu-overlay" @click="menuOpen = false"></div>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <div class="main-content">
 
-      <!-- HEADER -->
       <header class="game-header">
         <button class="hamburger" @click="menuOpen = !menuOpen">☰</button>
         <div class="logo">POKÉ<span>QUIZ</span></div>
@@ -169,20 +157,18 @@
         </button>
       </header>
 
-      <!-- POKÉDEX -->
       <transition name="slide-down">
         <div v-if="showPokedex" class="pokedex-overlay">
           <div class="pokedex-header">
             <span class="pokedex-title">POKÉDEX</span>
-            <span class="pokedex-subtitle">{{ unlockedPokemons.length }} / 151 desbloqueados</span>
+            <span class="pokedex-subtitle">{{ unlockedPokemons.length }} / 151... desbloqueados</span>
             <button class="close-btn" @click="showPokedex = false">✕</button>
           </div>
           <div class="pokedex-grid">
             <div v-for="n in 151" :key="n" class="pokedex-cell"
               :class="{
                 unlocked: isUnlocked(n),
-                locked:   !isUnlocked(n),
-                shiny:    isShinyUnlocked(n),
+                locked:   !isUnlocked(n)
               }">
               <img
                 :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${n}.png`"
@@ -191,56 +177,62 @@
               />
               <span class="cell-number">#{{ String(n).padStart(3,'0') }}</span>
               <span class="cell-name">{{ isUnlocked(n) ? getPokemonName(n) : '???' }}</span>
-              <span v-if="isShinyUnlocked(n)" class="shiny-star">✨</span>
               <span v-if="isUnlocked(n)" class="cell-level">LV.{{ getUnlockedLevel(n) }}</span>
             </div>
           </div>
         </div>
       </transition>
 
-      <!-- BATALLA -->
       <div class="battle-scene">
 
-        <!-- Timer -->
-        <div v-if="timerEnabled && gameStatus === GameStatus.Playing" class="timer-bar-wrap">
+        <div v-if="timerEnabled" class="timer-bar-wrap">
           <div class="timer-bar-fill"
-            :style="{ width: (timeLeft / 15 * 100) + '%', background: timeLeft > 8 ? '#44cc44' : timeLeft > 4 ? '#ffcc00' : '#ff4444' }">
+            :style="{
+              width: (timeLeft / 15 * 100) + '%',
+              background: timeLeft > 8 ? '#44cc44' : timeLeft > 4 ? '#ffcc00' : '#ff4444',
+              transition: timeLeft === 15 ? 'none' : 'width 1s linear, background 0.3s'
+            }">
           </div>
           <span class="timer-label">{{ timeLeft }}s</span>
         </div>
 
-        <!-- HP rival -->
         <div class="hp-panel enemy-panel">
-          <div class="hp-name">{{ gameStatus !== GameStatus.Playing ? randomPokemon.name.toUpperCase() : '???' }}</div>
+          <div class="hp-name">
+            {{ gameStatus !== GameStatus.Playing ? randomPokemon?.name.toUpperCase() : '???' }}
+          </div>
           <div class="hp-row">
             <span class="hp-label">HP</span>
             <div class="hp-bar-bg">
-              <div class="hp-bar-fill" :style="{ width: enemyHPPct + '%', background: hpColor(enemyHPPct) }"></div>
+              <div class="hp-bar-fill"
+                :style="{ width: enemyHPPct + '%', background: hpColor(enemyHPPct) }">
+              </div>
             </div>
             <span class="hp-value">{{ enemyHP }}</span>
           </div>
         </div>
 
-        <!-- Sprite rival -->
-        <div class="pokemon-sprite pokemon-enemy" :class="{ 'enemy-hit': gameStatus === GameStatus.Won }">
+        <div class="pokemon-sprite pokemon-enemy"
+          :class="{ 'enemy-hit': attackAnim === 'player-attack' }">
           <PokemonPicture
+            v-if="randomPokemon"
             :pokemon-id="randomPokemon.id"
             :show-pokemon="gameStatus !== GameStatus.Playing"
-            :is-shiny="isShinyRound"
           />
         </div>
 
-        <!-- Shiny badge -->
-        <div v-if="isShinyRound" class="shiny-badge">✨ SHINY</div>
-
-        <!-- Sprite jugador -->
-        <div class="pokemon-sprite pokemon-player" :class="{ shake: gameStatus === GameStatus.Lost }">
+        <div class="pokemon-sprite pokemon-player"
+          :class="{
+            'player-attack': attackAnim === 'player-attack',
+            'player-hit':    attackAnim === 'enemy-attack',
+          }">
           <div class="hp-panel player-panel-above">
             <div class="hp-name">PIKACHU</div>
             <div class="hp-row">
               <span class="hp-label">HP</span>
               <div class="hp-bar-bg">
-                <div class="hp-bar-fill" :style="{ width: playerHP + '%', background: hpColor(playerHP) }"></div>
+                <div class="hp-bar-fill"
+                  :style="{ width: playerHP + '%', background: hpColor(playerHP) }">
+                </div>
               </div>
               <span class="hp-value">{{ playerHP }}</span>
             </div>
@@ -252,7 +244,11 @@
 
         <div class="battle-platform platform-enemy"></div>
         <div class="battle-platform platform-player"></div>
-        <div class="difficulty-badge" :class="difficulty">{{ difficulties.find(d => d.value === difficulty)?.label }}</div>
+
+        <div class="difficulty-badge" :class="difficulty">
+          {{ difficulties.find(d => d.value === difficulty)?.label }}
+        </div>
+
         <div class="battle-msg-box">{{ battleMessage }}</div>
 
         <transition name="pop">
@@ -265,7 +261,6 @@
         </transition>
       </div>
 
-      <!-- TIPO + PISTA -->
       <div class="hint-row">
         <div v-if="currentType" class="type-info">
           🏷 Tipo: <strong>{{ currentType }}</strong>
@@ -282,7 +277,6 @@
         </div>
       </div>
 
-      <!-- STREAK DOTS -->
       <div class="streak-bar">
         <span class="streak-label">RACHA</span>
         <div class="streak-dots">
@@ -291,10 +285,9 @@
         <span class="exp-label">EXP TOTAL: {{ totalExp }}</span>
       </div>
 
-      <!-- PREGUNTA -->
       <div class="question-card">
         <div class="question-label">
-          {{ modeType ? '¿QUÉ POKÉMON ES DE ESTE TIPO?' : '¿QUIÉN ES ESTE POKÉMON?' }}
+          {{ modeType ? '¿QUÉ POKÉMON ES DE ESTE TIPO?' : '¿QUIÊN ES ESTE POKÉMON?' }}
         </div>
         <div class="question-text">
           {{ modeType && currentType
@@ -303,9 +296,9 @@
         </div>
       </div>
 
-      <!-- OPCIONES -->
       <transition name="round-transition" mode="out-in">
         <PokemonOptions
+          v-if="randomPokemon"
           :key="roundKey"
           :options="pokemonOptions"
           :block-selection="gameStatus !== GameStatus.Playing"
@@ -314,7 +307,6 @@
         />
       </transition>
 
-      <!-- FOOTER -->
       <div class="footer-row">
         <div class="scores">
           <div class="score-item"><span class="score-num wins">{{ wins }}</span><span class="score-lbl">WIN</span></div>
@@ -336,9 +328,17 @@ import PokemonOptions from '../components/PokemonOptions.vue'
 import { usePokemonGame } from '../composables/usePokemonGame'
 import { GameStatus } from '../interfaces'
 
+interface DifficultyOption {
+  value: 'easy' | 'medium' | 'hard';
+  label: string;
+  icon: string;
+  options: number;
+}
+
 const emit = defineEmits<{ goIntro: [] }>()
 
-const difficulties = [
+// Corregido el tipado estricto para evitar el error de asignación de strings
+const difficulties: DifficultyOption[] = [
   { value: 'easy',   label: 'FÁCIL',   icon: '🌿', options: 2 },
   { value: 'medium', label: 'MEDIA',   icon: '⚡',  options: 4 },
   { value: 'hard',   label: 'DIFÍCIL', icon: '🔥', options: 6 },
@@ -347,6 +347,9 @@ const difficulties = [
 const difficulty = ref<'easy' | 'medium' | 'hard'>('medium')
 const menuOpen   = ref(false)
 const roundKey   = ref(0)
+
+// Animación de ataque
+const attackAnim  = ref<'none' | 'player-attack' | 'enemy-attack'>('none')
 
 const difficultyCount = computed(() =>
   difficulty.value === 'easy' ? 2 : difficulty.value === 'hard' ? 6 : 4
@@ -360,7 +363,7 @@ const {
   unlockedPokemons, showPokedex,
   isGameOver, showLevelUp, newBadge, badges, records,
   timerEnabled, timeLeft, modeType, currentType,
-  hintUsed, hintCharges, isShinyRound,
+  hintUsed, hintCharges,
   EXP_PER_LEVEL,
   resetGame, useHint,
 } = usePokemonGame()
@@ -375,12 +378,12 @@ const totalExp   = computed(() => exp.value + (level.value - 1) * EXP_PER_LEVEL)
 const showTutorial = ref(!localStorage.getItem('pokequiz_tutorial_done'))
 const tutStep      = ref(0)
 const tutorialSteps = [
-  { icon: '👁',  title: '¡Adivina el Pokémon!',    desc: 'Se muestra la silueta de un Pokémon. Elige su nombre entre las opciones.' },
-  { icon: '❤️',  title: 'Tu vida importa',          desc: 'Si fallas pierdes 15 HP. Si aciertas recuperas 5 HP. A 0 HP es Game Over.' },
-  { icon: '⬆️',  title: 'Sube de nivel',            desc: 'Cada acierto te da EXP. Acumula suficiente para subir de nivel y ganar títulos.' },
-  { icon: '📖',  title: 'Completa la Pokédex',      desc: 'Cada Pokémon que adivines se añade a tu Pokédex. Los shiny dan el doble de EXP.' },
-  { icon: '💡',  title: 'Usa las pistas',           desc: 'Tienes 3 pistas por partida. Te revelan el tipo del Pokémon.' },
-  { icon: '🏆',  title: 'Récords e insignias',      desc: 'Consigue logros y bate tus récords. Ábrelos desde el menú lateral.' },
+  { icon: '👁',  title: '¡Adivina el Pokémon!',  desc: 'Se muestra la silueta de un Pokémon. Elige su nombre entre las opciones.' },
+  { icon: '❤️',  title: 'Tu vida importa',        desc: 'Si fallas pierdes 15 HP. Si aciertas recuperas 5 HP. A 0 HP es Game Over.' },
+  { icon: '⬆️',  title: 'Sube de nivel',          desc: 'Cada acierto da 20 EXP. Cada fallo resta 10 EXP.' },
+  { icon: '📖',  title: 'Completa la Pokédex',    desc: 'Cada Pokémon que adivines se añade a tu Pokédex.' },
+  { icon: '💡',  title: 'Usa las pistas',         desc: 'Tienes 3 pistas por partida que revelan el tipo del Pokémon.' },
+  { icon: '🏆',  title: 'Récords e insignias',    desc: 'Consigue logros y bate tus récords desde el menú lateral.' },
 ]
 
 function tutNext() {
@@ -396,8 +399,10 @@ function openTutorial() {
 
 const battleMessage = computed(() => {
   if (isGameOver.value)                        return '¡Pikachu no puede más! ¡Has perdido!'
-  if (gameStatus.value === GameStatus.Playing) return timerEnabled.value ? `¡${timeLeft.value}s para responder!` : '¡Un Pokémon salvaje aparece!'
-  if (gameStatus.value === GameStatus.Won)     return `¡Es ${randomPokemon.value?.name.toUpperCase()}!${isShinyRound.value ? ' ¡ERA SHINY! ✨' : ''}`
+  if (gameStatus.value === GameStatus.Playing) return timerEnabled.value
+    ? `⏱ ¡${timeLeft.value}s para responder!`
+    : '¡Un Pokémon salvaje aparece! ¿Cuál es su nombre?'
+  if (gameStatus.value === GameStatus.Won)     return `¡Es ${randomPokemon.value?.name.toUpperCase()}! ¡Ataque efectivo!`
   return `Era ${randomPokemon.value?.name.toUpperCase()}... ¡Fallaste!`
 })
 
@@ -408,14 +413,28 @@ function hpColor(pct: number) {
 }
 
 function isUnlocked(id: number)       { return unlockedPokemons.value.some(p => p.id === id) }
-function isShinyUnlocked(id: number)  { return unlockedPokemons.value.find(p => p.id === id)?.isShiny ?? false }
 function getPokemonName(id: number)   { return unlockedPokemons.value.find(p => p.id === id)?.name ?? '???' }
 function getUnlockedLevel(id: number) { return unlockedPokemons.value.find(p => p.id === id)?.unlockedAt ?? 0 }
 
+// Lanza la animación de ataque y luego ejecuta la lógica
 function handleAnswer(id: number) {
   const correct = id === randomPokemon.value?.id
-  if (correct) { enemyHP.value = 0; enemyHPPct.value = 0; }
-  checkAnswer(id)
+
+  if (correct) {
+    attackAnim.value = 'player-attack'
+    setTimeout(() => {
+      enemyHP.value    = 0
+      enemyHPPct.value = 0
+      checkAnswer(id)
+      setTimeout(() => { attackAnim.value = 'none' }, 400)
+    }, 400)
+  } else {
+    attackAnim.value = 'enemy-attack'
+    setTimeout(() => {
+      checkAnswer(id)
+      setTimeout(() => { attackAnim.value = 'none' }, 400)
+    }, 400)
+  }
 }
 
 function handleNext() {
@@ -765,6 +784,76 @@ function handleGoIntro() {
 .slide-right-enter-active,.slide-right-leave-active{transition:all .3s ease;}
 .slide-right-enter-from{opacity:0;transform:translateX(60px);}
 .slide-right-leave-to{opacity:0;transform:translateX(60px);}
+
+/* ── ANIMACIONES DE ATAQUE ── */
+
+/* Pikachu lanza un ataque hacia la derecha */
+.player-attack .player-img {
+  animation: pikachuAttack 0.6s ease forwards;
+}
+@keyframes pikachuAttack {
+  0%   { transform: scaleX(-1) translateX(0)    scale(1); }
+  30%  { transform: scaleX(-1) translateX(-30px) scale(1.15); }
+  55%  { transform: scaleX(-1) translateX(-80px) scale(1.2); }
+  75%  { transform: scaleX(-1) translateX(-60px) scale(1.1); }
+  100% { transform: scaleX(-1) translateX(0)    scale(1); }
+}
+
+/* Flash amarillo en Pikachu al atacar */
+.player-attack .player-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255, 203, 5, 0.6);
+  border-radius: 50%;
+  animation: attackFlash 0.4s ease;
+}
+@keyframes attackFlash {
+  0%   { opacity: 0; transform: scale(0.5); }
+  40%  { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* El enemigo recibe el golpe */
+.enemy-hit {
+  animation: enemyTakeHit 0.6s ease;
+}
+@keyframes enemyTakeHit {
+  0%   { transform: translateX(0)   opacity(1); filter: none; }
+  20%  { transform: translateX(18px); filter: brightness(3) saturate(0); }
+  40%  { transform: translateX(-12px); opacity: 0.5; }
+  60%  { transform: translateX(10px); filter: brightness(2); }
+  80%  { transform: translateX(-6px); opacity: 0.8; }
+  100% { transform: translateX(0);   opacity: 1; filter: none; }
+}
+
+/* Pikachu recibe el golpe */
+.player-hit .player-img {
+  animation: pikachuTakeHit 0.6s ease;
+}
+@keyframes pikachuTakeHit {
+  0%   { transform: scaleX(-1) translateX(0); filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+  20%  { transform: scaleX(-1) translateX(14px); filter: brightness(3) saturate(0); }
+  40%  { transform: scaleX(-1) translateX(-10px); opacity: 0.5; }
+  60%  { transform: scaleX(-1) translateX(8px); filter: brightness(2); }
+  80%  { transform: scaleX(-1) translateX(-4px); opacity: 0.8; }
+  100% { transform: scaleX(-1) translateX(0); filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+}
+
+/* ── POKÉDEX — celdas más grandes ── */
+.pokedex-grid {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+  gap: 10px !important;
+}
+.pokedex-cell {
+  padding: 12px 6px !important;
+}
+.pokedex-cell img {
+  width: 72px !important;
+  height: 72px !important;
+}
+.cell-number { font-size: 6px !important; }
+.cell-name   { font-size: 6px !important; }
+.cell-level  { font-size: 6px !important; }
 
 @media(max-width:600px){
   .main-content{padding:12px;}
