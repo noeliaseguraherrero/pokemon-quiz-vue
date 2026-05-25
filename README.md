@@ -1,54 +1,52 @@
-# pokemon-game
+# PokeQuiz - Guess the Pokémon 🎮
 
-This template should help get you started developing with Vue 3 in Vite.
+![Responsive Design](https://img.shields.io/badge/Responsive-Design-2ea44f?style=for-the-badge&logo=airplay)
 
-## Recommended IDE Setup
+> **Aplicación Web con Vue 3 y TypeScript**
+Un juego interactivo de adivinar el Pokémon basado en siluetas, desarrollado con Vue 3, TypeScript y la PokéAPI. Está diseñado con una estructura limpia y organizada por carpetas, utilizando composables para separar la lógica del juego de la parte visual. Además, la interfaz es 100% adaptable, por lo que se puede jugar perfectamente tanto en móviles como en ordenadores. Cuenta con un sistema de dificultades dinámicas, gestión de vidas, niveles, estadísticas en tiempo real y una Pokédex desbloqueable.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 📋 Funcionalidades Principales
 
-## Recommended Browser Setup
+### ⚙️ Sistema de Juego y Dificultades
+* **Dificultad Dinámica:** Panel lateral para seleccionar el nivel de desafío que altera el renderizado de opciones:
+    * **Baja:** Muestra 2 opciones de respuesta.
+    * **Media:** Muestra 4 opciones de respuesta.
+    * **Alta:** Muestra 6 opciones de respuesta.
+* **Mecánica de Supervivencia:** Gestión en tiempo real de una barra de vida (HP), niveles de jugador y ganancia de experiencia (EXP) tras cada acierto.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+### 🗂️ Progreso y Colección
+* **Pokédex Desbloqueable:** Registro interactivo de avistamientos que se actualiza y desbloquea a los Pokémon conforme se aciertan en partida (Progreso de 0/151).
+* **Perfil e Insignias:** Panel de estadísticas que rastrea la racha actual, la mejor racha histórica, victorias totales y otorga insignias de perfil por logros conseguidos.
+* **Persistencia de Datos:** Guardado automático local para mantener el progreso de la Pokédex, récords y medallas al cerrar la sesión.
 
-## Type Support for `.vue` Imports in TS
+## 💻 Tecnologías Utilizadas
+* **Frontend Framework:** Vue 3 con la Composition API.
+* **Lenguaje:** TypeScript para control estricto de tipos mediante interfaces y enums.
+* **Estilos:** CSS3 nativo avanzado con enfoque Mobile-First y animaciones personalizadas.
+* **API Externa:** PokéAPI REST para la obtención y carga asíncrona de datos y sprites.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 📁 Estructura del Proyecto
 
-## Customize configuration
+El código está organizado por módulos y componentes reutilizables mediante una arquitectura limpia:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```text
+src/
+├── assets/             # Estilos globales y animaciones de combate
+├── modules/pokemon/    # Módulo principal del juego
+│   ├── api/            # Configuración de Axios/Fetch para PokéAPI
+│   ├── components/     # BattleHUD, PokemonDex, PokemonOptions, PokemonPicture
+│   ├── composables/    # Lógica de juego central (usePokemonGame, useStorage)
+│   ├── interfaces/     # Tipados y Enums (game-status, respuestas de API)
+│   └── pages/          # Pantallas principales (IntroScreen, PokemonGame)
+├── App.vue             # Componente raíz
+└── main.ts             # Punto de entrada de la aplicación
 ```
 
-### Compile and Hot-Reload for Development
+## 📸 Vistas de la Aplicación
 
-```sh
-npm run dev
-```
+> [!TIP]
+> Cada sección de la plataforma ha sido diseñada para ser 100% funcional y responsive. Las siguientes capturas muestran los puntos clave, pero el sistema integra una experiencia de navegación mucho más completa.
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+| **Pantalla Principal del Juego** | **Panel de Dificultades e Interfaz** |
+|:---:|:---:|
+| <img alt="imgJuego" src="image_0ad8dc.jpg" /> | <img alt="imgEstructura" src="image_0adc1e.png" /> |
