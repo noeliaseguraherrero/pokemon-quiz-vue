@@ -1,54 +1,45 @@
-# pokemon-game
+# PokéQuiz 🎮⚡
 
-This template should help get you started developing with Vue 3 in Vite.
+¡Bienvenido a **PokéQuiz**! Un juego web interactivo e intuitivo basado en el clásico "¿Quién es ese Pokémon?". El objetivo es identificar al Pokémon oculto tras la silueta seleccionando la opción correcta entre múltiples alternativas que varían según la dificultad elegida.
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## ✨ Características Principales
 
-## Recommended Browser Setup
+* **Dificultad Dinámica:** Elige tu nivel de desafío en el panel lateral:
+    * 🟢 **Fácil:** 2 opciones de respuesta.
+    * 🟡 **Media:** 4 opciones de respuesta.
+    * 🔴 **Difícil:** 6 opciones de respuesta.
+* **Sistema de Progreso y Supervivencia:** Control de niveles, experiencia (EXP) y barra de vida (HP) del jugador.
+* **Pokédex Desbloqueable:** Registra y colecciona todos los Pokémon que vayas descubriendo y acertando a lo largo de tus partidas (Progreso de 0/151).
+* **Estadísticas y Logros:** Panel en tiempo real que rastrea tus victorias, derrotas, racha actual, mejor racha histórica e insignias de perfil desbloqueadas.
+* **Persistencia de Datos:** Guardado local para mantener tus récords e insignias a través de sesiones.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+---
 
-## Type Support for `.vue` Imports in TS
+## 🛠️ Tecnologías Utilizadas
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Este proyecto ha sido estructurado siguiendo las mejores prácticas de modularidad y escalabilidad:
 
-## Customize configuration
+* **Framework:** [Vue.js 3](https://vuejs.org/) (Composition API)
+* **Lenguaje:** [TypeScript](https://www.typescriptlang.org/) (Tipado estricto para respuestas de API y estados)
+* **Estilos:** CSS3 nativo / Animaciones personalizadas
+* **API Externa:** [PokéAPI](https://pokeapi.co/) para la obtención dinámica de los datos y sprites de los Pokémon.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
 
-## Project Setup
+## 📁 Estructura del Proyecto
 
-```sh
-npm install
-```
+El código está organizado por módulos y componentes reutilizables mediante una arquitectura limpia:
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+```text
+src/
+├── assets/             # Estilos globales y animaciones de combate
+├── modules/pokemon/    # Módulo principal del juego
+│   ├── api/            # Configuración de Axios/Fetch para PokéAPI
+│   ├── components/     # BattleHUD, PokemonDex, PokemonOptions, PokemonPicture
+│   ├── composables/    # Lógica de juego central (usePokemonGame, useStorage)
+│   ├── interfaces/     # Tipados y Enums (game-status, respuestas de API)
+│   └── pages/          # Pantallas principales (IntroScreen, PokemonGame)
+├── App.vue             # Componente raíz
+└── main.ts             # Punto de entrada de la aplicación
