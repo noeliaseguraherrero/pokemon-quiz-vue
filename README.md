@@ -1,10 +1,12 @@
-# PokéQuiz 🎮⚡
+# PokéQuiz
+
+![Responsive Design](https://img.shields.io/badge/Responsive-Design-2ea44f?style=for-the-badge&logo=airplay)
 
 ¡Bienvenido a **PokéQuiz**! Un juego web interactivo e intuitivo basado en el clásico "¿Quién es ese Pokémon?". El objetivo es identificar al Pokémon oculto tras la silueta seleccionando la opción correcta entre múltiples alternativas que varían según la dificultad elegida.
 
 ---
 
-## ✨ Características Principales
+##  Características Principales
 
 * **Dificultad Dinámica:** Elige tu nivel de desafío en el panel lateral:
     * 🟢 **Fácil:** 2 opciones de respuesta.
