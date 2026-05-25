@@ -1,4 +1,4 @@
-# PokeQuiz - Guess the Pokémon 🎮⚡
+# PokeQuiz - Guess the Pokémon 🎮
 
 ![Responsive Design](https://img.shields.io/badge/Responsive-Design-2ea44f?style=for-the-badge&logo=airplay)
 
