@@ -86,9 +86,9 @@
         <div class="section-label">MODOS</div>
         <div class="mode-row">
           <span class="mode-label">⏱ Contrarreloj</span>
-          <button class="toggle-btn" :class="{ on: timerEnabled }" @click="timerEnabled = !timerEnabled">
-            {{ timerEnabled ? 'ON' : 'OFF' }}
-          </button>
+        <button class="toggle-btn" :class="{ on: timerEnabled }" @click="toggleTimer">
+          {{ timerEnabled ? 'ON' : 'OFF' }}
+        </button>
         </div>
         <div class="mode-row">
           <span class="mode-label">🏷 Modo tipo</span>
@@ -189,7 +189,7 @@
           <div class="timer-bar-fill"
             :style="{
               width: (timeLeft / 15 * 100) + '%',
-              background: timeLeft > 8 ? '#44cc44' : timeLeft > 4 ? '#ffcc00' : '#ff4444',
+              background: timeLeft > 11 ? '#44cc44' : timeLeft > 7 ? '#ffcc00' : timeLeft > 3 ? '#ff8800' : '#ff4444',
               transition: timeLeft === 15 ? 'none' : 'width 1s linear, background 0.3s'
             }">
           </div>
@@ -466,6 +466,13 @@ function handleReset() {
 function handleGoIntro() {
   menuOpen.value = false
   emit('goIntro')
+}
+
+function toggleTimer() {
+  timerEnabled.value = !timerEnabled.value;
+  if (timerEnabled.value && gameStatus.value === GameStatus.Playing) {
+    getNextRound(difficultyCount.value);
+  }
 }
 </script>
 

@@ -75,9 +75,10 @@ export const usePokemonGame = () => {
   const wins      = ref(0);
   const losses    = ref(0);
   const streak    = ref(0);
-  const exp       = ref(0);
-  const level     = ref(1);
-  const expToNext = ref(EXP_PER_LEVEL);
+const exp       = ref<number>(loadData('player_exp', 0));
+const level     = ref<number>(loadData('player_level', 1));
+// Calculamos el requerimiento basándonos en el nivel cargado
+const expToNext = ref<number>(EXP_PER_LEVEL * level.value);
 
   const unlockedPokemons = ref<UnlockedPokemon[]>(loadData('pokedex', []));
   const badges = ref<Badge[]>(
@@ -119,6 +120,18 @@ const currentTitle = computed(() => {
 
   watch(unlockedPokemons, val => saveData('pokedex', val), { deep: true });
   watch(records,          val => saveData('records', val), { deep: true });
+  // Dentro de usePokemonGame.ts
+  watch(timerEnabled, (isEnabled) => {
+    if (!isEnabled) {
+      stopTimer(); // Si pasa a OFF, detenemos el setInterval de inmediato
+    }
+  });
+  // Añade esto debajo de tus otros watch:
+  watch(exp,   val => saveData('player_exp', val));
+  watch(level, val => {
+    saveData('player_level', val);
+    updateRecords(); // De paso, aseguramos que el récord de nivel máximo se actualice
+  });
 
   // ── BADGES ───────────────────────────────────────────
   const tryUnlockBadge = (id: string) => {
@@ -241,11 +254,10 @@ const currentTitle = computed(() => {
     pokemons.value       = pokemons.value.slice(howMany);
 
     setTimeout(() => {
-      // 3. SOLUCIÓN: Agregamos el chequeo condicional 'randomPokemon.value' para evitar errores si no hay datos
       if (modeType.value && randomPokemon.value) {
         fetchPokemonType(randomPokemon.value.id);
       }
-      startTimer();
+      startTimer(); // <-- Esta línea es la que activa el reloj en cada ronda
     }, 50);
   };
 
@@ -304,6 +316,8 @@ const currentTitle = computed(() => {
     currentType.value      = '';
     unlockedPokemons.value = [];
     clearData('pokedex');
+    clearData('player_exp');   // <-- Añade esta línea
+    clearData('player_level');
 
     getPokemons().then(result => {
       pokemons.value = result;
