@@ -1,34 +1,29 @@
-# PokéQuiz
+# PokéQuiz - Guess the Pokémon 🎮⚡
 
 ![Responsive Design](https://img.shields.io/badge/Responsive-Design-2ea44f?style=for-the-badge&logo=airplay)
 
-¡Bienvenido a **PokéQuiz**! Un juego web interactivo e intuitivo basado en el clásico "¿Quién es ese Pokémon?". El objetivo es identificar al Pokémon oculto tras la silueta seleccionando la opción correcta entre múltiples alternativas que varían según la dificultad elegida.
+> **Aplicación Web con Vue 3 y TypeScript**
+Un juego interactivo de adivinar el Pokémon basado en siluetas, desarrollado con Vue 3, TypeScript y la PokéAPI. Está diseñado con una estructura limpia y organizada por carpetas, utilizando composables para separar la lógica del juego de la parte visual. Además, la interfaz es 100% adaptable, por lo que se puede jugar perfectamente tanto en móviles como en ordenadores. Cuenta con un sistema de dificultades dinámicas, gestión de vidas, niveles, estadísticas en tiempo real y una Pokédex desbloqueable.
 
----
+## 📋 Funcionalidades Principales
 
-##  Características Principales
+### ⚙️ Sistema de Juego y Dificultades
+* **Dificultad Dinámica:** Panel lateral para seleccionar el nivel de desafío que altera el renderizado de opciones:
+    * **Baja:** Muestra 2 opciones de respuesta.
+    * **Media:** Muestra 4 opciones de respuesta.
+    * **Alta:** Muestra 6 opciones de respuesta.
+* **Mecánica de Supervivencia:** Gestión en tiempo real de una barra de vida (HP), niveles de jugador y ganancia de experiencia (EXP) tras cada acierto.
 
-* **Dificultad Dinámica:** Elige tu nivel de desafío en el panel lateral:
-    * 🟢 **Fácil:** 2 opciones de respuesta.
-    * 🟡 **Media:** 4 opciones de respuesta.
-    * 🔴 **Difícil:** 6 opciones de respuesta.
-* **Sistema de Progreso y Supervivencia:** Control de niveles, experiencia (EXP) y barra de vida (HP) del jugador.
-* **Pokédex Desbloqueable:** Registra y colecciona todos los Pokémon que vayas descubriendo y acertando a lo largo de tus partidas (Progreso de 0/151).
-* **Estadísticas y Logros:** Panel en tiempo real que rastrea tus victorias, derrotas, racha actual, mejor racha histórica e insignias de perfil desbloqueadas.
-* **Persistencia de Datos:** Guardado local para mantener tus récords e insignias a través de sesiones.
+### 🗂️ Progreso y Colección
+* **Pokédex Desbloqueable:** Registro interactivo de avistamientos que se actualiza y desbloquea a los Pokémon conforme se aciertan en partida (Progreso de 0/151).
+* **Perfil e Insignias:** Panel de estadísticas que rastrea la racha actual, la mejor racha histórica, victorias totales y otorga insignias de perfil por logros conseguidos.
+* **Persistencia de Datos:** Guardado automático local para mantener el progreso de la Pokédex, récords y medallas al cerrar la sesión.
 
----
-
-## 🛠️ Tecnologías Utilizadas
-
-Este proyecto ha sido estructurado siguiendo las mejores prácticas de modularidad y escalabilidad:
-
-* **Framework:** [Vue.js 3](https://vuejs.org/) (Composition API)
-* **Lenguaje:** [TypeScript](https://www.typescriptlang.org/) (Tipado estricto para respuestas de API y estados)
-* **Estilos:** CSS3 nativo / Animaciones personalizadas
-* **API Externa:** [PokéAPI](https://pokeapi.co/) para la obtención dinámica de los datos y sprites de los Pokémon.
-
----
+## 💻 Tecnologías Utilizadas
+* **Frontend Framework:** Vue 3 con la Composition API.
+* **Lenguaje:** TypeScript para control estricto de tipos mediante interfaces y enums.
+* **Estilos:** CSS3 nativo avanzado con enfoque Mobile-First y animaciones personalizadas.
+* **API Externa:** PokéAPI REST para la obtención y carga asíncrona de datos y sprites.
 
 ## 📁 Estructura del Proyecto
 
