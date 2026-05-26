@@ -155,6 +155,9 @@
         <button class="pokedex-btn" @click="showPokedex = !showPokedex">
           📖 {{ unlockedPokemons.length }}/151
         </button>
+        <button class="mart-btn" @click="showMart = true">
+          🏪 {{ coins }} PC
+        </button>
       </header>
 
       <transition name="slide-down">
@@ -318,6 +321,22 @@
       </div>
 
     </div>
+
+        <!-- ANIMACIÓN POKÉBALL -->
+    <PokeballCatch
+      :pokemon-id="catchPokemonId"
+      :trigger="catchTrigger"
+      @done="onCatchDone"
+    />
+
+    <Pokemart
+  v-model="showMart"
+  :coins="coins"
+  :player-h-p="playerHP"
+  :hint-charges="hintCharges"
+  @buy="handleBuy"
+/>
+
   </section>
 </template>
 
@@ -327,6 +346,14 @@ import PokemonPicture from '../components/PokemonPicture.vue'
 import PokemonOptions from '../components/PokemonOptions.vue'
 import { usePokemonGame } from '../composables/usePokemonGame'
 import { GameStatus } from '../interfaces'
+import PokeballCatch from '../components/PokeballCatch.vue'
+import Pokemart      from '../components/Pokemart.vue'
+
+const showMart = ref(false)
+
+// Pokéball catch
+const catchTrigger   = ref(false)
+const catchPokemonId = ref(1)
 
 interface DifficultyOption {
   value: 'easy' | 'medium' | 'hard';
@@ -366,6 +393,8 @@ const {
   hintUsed, hintCharges,
   EXP_PER_LEVEL,
   resetGame, useHint,
+    coins,
+  buyPotion, buyHyperPotion, buyHint, buyMasterBall,
 } = usePokemonGame()
 
 const enemyHP    = ref(100)
@@ -385,6 +414,22 @@ const tutorialSteps = [
   { icon: '💡',  title: 'Usa las pistas',         desc: 'Tienes 3 pistas por partida que revelan el tipo del Pokémon.' },
   { icon: '🏆',  title: 'Récords e insignias',    desc: 'Consigue logros y bate tus récords desde el menú lateral.' },
 ]
+
+function handleBuy(item: string) {
+  if (item === 'potion')      { buyPotion(); return }
+  if (item === 'hyperpotion') { buyHyperPotion(); return }
+  if (item === 'hint')        { buyHint(); return }
+  if (item === 'masterball')  {
+    buyMasterBall(() => {
+      // Elimina la mitad de las opciones incorrectas
+      const correct  = pokemonOptions.value.find(p => p.id === randomPokemon.value?.id)!
+      const wrongs   = pokemonOptions.value.filter(p => p.id !== randomPokemon.value?.id)
+      const toRemove = Math.floor(wrongs.length / 2)
+      const keep     = wrongs.slice(toRemove)
+      pokemonOptions.value = [...keep, correct].sort(() => Math.random() - 0.5)
+    })
+  }
+}
 
 function tutNext() {
   if (tutStep.value < tutorialSteps.length - 1) { tutStep.value++; return; }
@@ -416,25 +461,41 @@ function isUnlocked(id: number)       { return unlockedPokemons.value.some(p => 
 function getPokemonName(id: number)   { return unlockedPokemons.value.find(p => p.id === id)?.name ?? '???' }
 function getUnlockedLevel(id: number) { return unlockedPokemons.value.find(p => p.id === id)?.unlockedAt ?? 0 }
 
-// Lanza la animación de ataque y luego ejecuta la lógica
 function handleAnswer(id: number) {
   const correct = id === randomPokemon.value?.id
 
   if (correct) {
+    // 1. Animación de ataque de Pikachu
     attackAnim.value = 'player-attack'
+
     setTimeout(() => {
       enemyHP.value    = 0
       enemyHPPct.value = 0
-      checkAnswer(id)
-      setTimeout(() => { attackAnim.value = 'none' }, 400)
-    }, 400)
+      attackAnim.value = 'none'
+
+      // 2. Lanza la animación de la Pokéball
+      catchPokemonId.value = randomPokemon.value!.id
+      catchTrigger.value   = false
+      // Necesitamos un tick para que el watch detecte el cambio
+      setTimeout(() => { catchTrigger.value = true }, 30)
+
+      // 3. La lógica real se ejecuta en onCatchDone
+    }, 500)
+
   } else {
+    // Fallo: el enemigo ataca a Pikachu
     attackAnim.value = 'enemy-attack'
     setTimeout(() => {
       checkAnswer(id)
-      setTimeout(() => { attackAnim.value = 'none' }, 400)
-    }, 400)
+      attackAnim.value = 'none'
+    }, 500)
   }
+}
+
+// Se llama cuando termina la animación de la Pokéball
+function onCatchDone() {
+  catchTrigger.value = false
+  checkAnswer(randomPokemon.value!.id)  // registra el acierto
 }
 
 function handleNext() {
@@ -861,6 +922,20 @@ function toggleTimer() {
 .cell-number { font-size: 6px !important; }
 .cell-name   { font-size: 6px !important; }
 .cell-level  { font-size: 6px !important; }
+
+.mart-btn {
+  font-family: 'Press Start 2P', monospace; font-size: 6px;
+  background: rgba(255,203,5,0.12);
+  color: #ffcb05;
+  border: 1px solid rgba(255,203,5,0.35);
+  border-radius: 20px; padding: 8px 14px;
+  cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.mart-btn:hover {
+  background: rgba(255,203,5,0.22);
+  transform: translateY(-1px);
+}
 
 @media(max-width:600px){
   .main-content{padding:12px;}

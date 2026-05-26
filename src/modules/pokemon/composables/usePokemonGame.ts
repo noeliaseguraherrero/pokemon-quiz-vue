@@ -29,6 +29,7 @@ export interface GameRecord {
 const EXP_PER_LEVEL = 100;
 const EXP_ON_WIN     = 20;
 const EXP_ON_LOSE   = 10;
+const COINS_ON_WIN = 5;
 
 const BADGE_DEFS: Omit<Badge, 'unlocked'>[] = [
   { id: 'first',      name: 'Primer paso',  desc: 'Adivina tu primer Pokémon',   icon: '🌱' },
@@ -105,6 +106,8 @@ const expToNext = ref<number>(EXP_PER_LEVEL * level.value);
   const hintUsed    = ref(false);
   const hintCharges = ref(3);
 
+  const coins = ref(loadData<number>('coins', 0));
+
   const randomPokemon = computed(() => {
     const idx = Math.floor(Math.random() * pokemonOptions.value.length);
     return pokemonOptions.value[idx];
@@ -132,6 +135,8 @@ const currentTitle = computed(() => {
     saveData('player_level', val);
     updateRecords(); // De paso, aseguramos que el récord de nivel máximo se actualice
   });
+
+  watch(coins, val => saveData('coins', val));
 
   // ── BADGES ───────────────────────────────────────────
   const tryUnlockBadge = (id: string) => {
@@ -270,34 +275,35 @@ const currentTitle = computed(() => {
   };
 
   // ── RESPUESTA ────────────────────────────────────────
-  const checkAnswer = (id: number) => {
-    stopTimer();
-    const correct = randomPokemon.value?.id === id;
+const checkAnswer = (id: number) => {
+  stopTimer();
+  const correct = randomPokemon.value?.id === id;
 
-    if (correct) {
-      gameStatus.value = GameStatus.Won;
-      wins.value++;
-      streak.value++;
-      gainExp(EXP_ON_WIN);
-      // 3. SOLUCIÓN: Agregamos una comprobación explícita o una aserción '!' de que existe
-      if (randomPokemon.value) {
-        unlockPokemon(randomPokemon.value);
-      }
-      playerHP.value = Math.min(100, playerHP.value + 5);
-    } else {
-      gameStatus.value = GameStatus.Lost;
-      losses.value++;
-      streak.value = 0;
-      loseExp(EXP_ON_LOSE);
-      playerHP.value -= 15;
-      if (playerHP.value <= 0) {
-        playerHP.value   = 0;
-        isGameOver.value = true;
-      }
+  if (correct) {
+    gameStatus.value = GameStatus.Won;
+    wins.value++;
+    streak.value++;
+    gainExp(EXP_ON_WIN);
+    unlockPokemon(randomPokemon.value!);
+    playerHP.value = Math.min(100, playerHP.value + 5);
+
+    // Monedas: +5 base + bonus por racha
+    const streakBonus = Math.floor(streak.value / 3);
+    coins.value += COINS_ON_WIN + streakBonus;
+  } else {
+    gameStatus.value = GameStatus.Lost;
+    losses.value++;
+    streak.value = 0;
+    loseExp(EXP_ON_LOSE);
+    playerHP.value -= 15;
+    if (playerHP.value <= 0) {
+      playerHP.value   = 0;
+      isGameOver.value = true;
     }
-    checkBadges();
-    updateRecords();
-  };
+  }
+  checkBadges();
+  updateRecords();
+};
 
   // ── RESET ────────────────────────────────────────────
   const resetGame = (howMany = 4) => {
@@ -330,6 +336,35 @@ const currentTitle = computed(() => {
     getNextRound();
   });
 
+// ── TIENDA ────────────────────────────────────────────
+const buyPotion = () => {
+  if (coins.value < 20) return false;
+  coins.value   -= 20;
+  playerHP.value = Math.min(100, playerHP.value + 20);
+  return true;
+};
+
+const buyHyperPotion = () => {
+  if (coins.value < 50) return false;
+  coins.value   -= 50;
+  playerHP.value = Math.min(100, playerHP.value + 50);
+  return true;
+};
+
+const buyHint = () => {
+  if (coins.value < 30) return false;
+  coins.value    -= 30;
+  hintCharges.value += 1;
+  return true;
+};
+
+const buyMasterBall = (eliminateWrong: () => void) => {
+  if (coins.value < 100) return false;
+  coins.value -= 100;
+  eliminateWrong();
+  return true;
+};
+
   return {
     gameStatus, isLoading, pokemonOptions, randomPokemon,
     playerHP, wins, losses, streak, exp, level, expToNext,
@@ -339,5 +374,8 @@ const currentTitle = computed(() => {
     hintUsed, hintCharges,
     EXP_PER_LEVEL,
     getNextRound, checkAnswer, resetGame, useHint,
+    coins,
+    buyPotion, buyHyperPotion, buyHint,
+    buyMasterBall,
   };
 };
