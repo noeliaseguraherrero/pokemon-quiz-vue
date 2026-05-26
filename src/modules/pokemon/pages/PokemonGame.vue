@@ -160,31 +160,79 @@
         </button>
       </header>
 
-      <transition name="slide-down">
-        <div v-if="showPokedex" class="pokedex-overlay">
-          <div class="pokedex-header">
-            <span class="pokedex-title">POKÉDEX</span>
-            <span class="pokedex-subtitle">{{ unlockedPokemons.length }} / 151... desbloqueados</span>
-            <button class="close-btn" @click="showPokedex = false">✕</button>
-          </div>
-          <div class="pokedex-grid">
-            <div v-for="n in 151" :key="n" class="pokedex-cell"
-              :class="{
-                unlocked: isUnlocked(n),
-                locked:   !isUnlocked(n)
-              }">
-              <img
-                :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${n}.png`"
-                :alt="getPokemonName(n)"
-                :class="{ silhouette: !isUnlocked(n) }"
-              />
-              <span class="cell-number">#{{ String(n).padStart(3,'0') }}</span>
-              <span class="cell-name">{{ isUnlocked(n) ? getPokemonName(n) : '???' }}</span>
-              <span v-if="isUnlocked(n)" class="cell-level">LV.{{ getUnlockedLevel(n) }}</span>
-            </div>
-          </div>
-        </div>
-      </transition>
+<transition name="slide-down">
+  <div v-if="showPokedex" class="pokedex-overlay">
+
+    <div class="pokedex-header">
+      <span class="pokedex-title">POKÉDEX</span>
+      <span class="pokedex-subtitle">{{ unlockedPokemons.length }} / 151</span>
+      <button class="close-btn" @click="showPokedex = false">✕</button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="pokedex-filters">
+      <!-- Estado -->
+<div class="filter-group">
+  <button v-for="f in filterOptions" :key="f.v"
+    class="filter-btn"
+    :class="{ active: pokedexFilter === f.v }"
+    @click="pokedexFilter = f.v">
+    {{ f.l }}
+  </button>
+</div>
+
+      <!-- Tipo -->
+      <div class="filter-row">
+        <span class="filter-label">TIPO:</span>
+        <select class="filter-select" v-model="pokedexTypeFilter">
+          <option v-for="t in TYPE_LIST" :key="t" :value="t">
+            {{ t === 'all' ? 'Todos' : t }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Nivel máximo de captura -->
+      <div class="filter-row">
+        <span class="filter-label">NIVEL CAPTURA ≤:</span>
+        <select class="filter-select" v-model.number="pokedexLevelFilter">
+          <option :value="0">Todos</option>
+          <option v-for="l in [1,2,3,5,8,10,15,20,30]" :key="l" :value="l">{{ l }}</option>
+        </select>
+      </div>
+
+      <span class="filter-count">{{ filteredPokedexIds.length }} resultados</span>
+    </div>
+
+    <!-- Grid -->
+    <div class="pokedex-grid">
+      <div v-for="n in filteredPokedexIds" :key="n"
+        class="pokedex-cell"
+        :class="{
+          unlocked: isUnlocked(n),
+          locked:   !isUnlocked(n),
+          shiny:    isShinyUnlocked(n),
+          clickable: isUnlocked(n),
+        }"
+        @click="openPokedexDetail(n)"
+      >
+        <img
+          :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${n}.png`"
+          :alt="getPokemonName(n)"
+          :class="{ silhouette: !isUnlocked(n) }"
+        />
+        <span class="cell-number">#{{ String(n).padStart(3,'0') }}</span>
+        <span class="cell-name">{{ isUnlocked(n) ? getPokemonName(n) : '???' }}</span>
+        <span v-if="isShinyUnlocked(n)" class="shiny-star">✨</span>
+        <span v-if="isUnlocked(n)" class="cell-level">LV.{{ getUnlockedLevel(n) }}</span>
+      </div>
+
+      <div v-if="filteredPokedexIds.length === 0" class="pokedex-empty">
+        Sin resultados para estos filtros
+      </div>
+    </div>
+
+  </div>
+</transition>
 
       <div class="battle-scene">
 
@@ -337,17 +385,145 @@
   @buy="handleBuy"
 />
 
+<!-- DETALLE POKÉDEX -->
+<PokedexDetail
+  :pokemon="selectedPokemon"
+  @close="selectedPokemon = null"
+/>
+
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+// SOLUCIONADO 3: Se añade 'watch' al import de Vue
+import { computed, ref, watch } from 'vue'
 import PokemonPicture from '../components/PokemonPicture.vue'
 import PokemonOptions from '../components/PokemonOptions.vue'
 import { usePokemonGame } from '../composables/usePokemonGame'
 import { GameStatus } from '../interfaces'
 import PokeballCatch from '../components/PokeballCatch.vue'
 import Pokemart      from '../components/Pokemart.vue'
+import PokedexDetail from '../components/PokedexDetail.vue'
+
+// Interfaces de ayuda
+interface DifficultyOption {
+  value: 'easy' | 'medium' | 'hard'
+  label: string
+  icon: string
+  options: number
+}
+
+// SOLUCIONADO 2: Tipado estricto para la respuesta de tipos de la PokéAPI
+interface PokeApiTypeResponse {
+  type: {
+    name: string
+  }
+}
+
+// SOLUCIONADO 1: Definimos el tipo estricto para los filtros de la Pokédex
+type PokedexFilterType = 'all' | 'unlocked' | 'locked' | 'shiny'
+
+interface FilterOption {
+  v: PokedexFilterType
+  l: string
+}
+
+const emit = defineEmits<{ goIntro: [] }>()
+
+// SOLUCIONADO 4: Traemos primero usePokemonGame para que showPokedex exista antes de usar su watch
+const {
+  randomPokemon, isLoading, gameStatus,
+  pokemonOptions, checkAnswer, getNextRound,
+  playerHP, wins, losses, streak,
+  exp, level, expToNext, levelProgress, currentTitle,
+  unlockedPokemons, showPokedex,
+  isGameOver, showLevelUp, newBadge, badges, records,
+  timerEnabled, timeLeft, modeType, currentType,
+  hintUsed, hintCharges,
+  EXP_PER_LEVEL,
+  resetGame, useHint,
+  coins,
+  buyPotion, buyHyperPotion, buyHint, buyMasterBall
+  // SOLUCIONADO 6: Quitamos 'isShinyRound' ya que no se usaba en el archivo
+} = usePokemonGame()
+
+// Pokédex filtros y detalle
+const pokedexFilter  = ref<PokedexFilterType>('all')
+const pokedexTypeFilter = ref('all')
+const pokedexLevelFilter = ref(0)
+const selectedPokemon = ref<typeof unlockedPokemons.value[0] | null>(null)
+
+// Array de filtros mapeado explícitamente con su tipo estricto para el template
+const filterOptions: FilterOption[] = [
+  { v: 'all',      l: 'TODOS' },
+  { v: 'unlocked', l: 'CAPTURADOS' },
+  { v: 'locked',   l: 'SIN CAPTURAR' },
+  { v: 'shiny',    l: '✨ SHINY' },
+]
+
+const TYPE_LIST = [
+  'all','Normal','Fuego','Agua','Eléctrico','Planta','Hielo',
+  'Lucha','Veneno','Tierra','Volador','Psíquico','Bicho',
+  'Roca','Fantasma','Dragón','Siniestro','Acero','Hada',
+]
+
+const TYPE_TRANSLATIONS_ES: Record<string, string> = {
+  normal:'Normal', fire:'Fuego', water:'Agua', electric:'Eléctrico',
+  grass:'Planta', ice:'Hielo', fighting:'Lucha', poison:'Veneno',
+  ground:'Tierra', flying:'Volador', psychic:'Psíquico', bug:'Bicho',
+  rock:'Roca', ghost:'Fantasma', dragon:'Dragón', dark:'Siniestro',
+  steel:'Acero', fairy:'Hada',
+}
+
+// Caché de tipos por id para filtrar
+const typeCache = ref<Record<number, string[]>>({})
+
+// SOLUCIONADO 2 y 5: Cambiado (t: any) por el tipo estructurado y 'val' ahora tiene tipo booleano automático
+async function loadTypeForFilter(id: number) {
+  if (typeCache.value[id]) return
+  try {
+    const r    = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+    const data = await r.json()
+    typeCache.value[id] = data.types.map((t: PokeApiTypeResponse) => TYPE_TRANSLATIONS_ES[t.type.name] ?? t.type.name)
+  } catch { typeCache.value[id] = [] }
+}
+
+// Filtra los números 1-151
+const filteredPokedexIds = computed(() => {
+  return Array.from({ length: 151 }, (_, i) => i + 1).filter(n => {
+    const unlocked = unlockedPokemons.value.find(p => p.id === n)
+
+    // Filtro estado
+    if (pokedexFilter.value === 'unlocked' && !unlocked) return false
+    if (pokedexFilter.value === 'locked'   && unlocked)  return false
+    if (pokedexFilter.value === 'shiny'    && !unlocked?.isShiny) return false
+
+    // Filtro nivel
+    if (pokedexLevelFilter.value > 0 && unlocked) {
+      if (unlocked.unlockedAt > pokedexLevelFilter.value) return false
+    }
+
+    // Filtro tipo (solo para desbloqueados con caché)
+    if (pokedexTypeFilter.value !== 'all' && unlocked) {
+      const types = typeCache.value[n]
+      if (types && !types.includes(pokedexTypeFilter.value)) return false
+    }
+
+    return true
+  })
+})
+
+// Cuando se abre la pokédex, pre-carga tipos de los desbloqueados
+watch(showPokedex, (val) => {
+  if (val) {
+    unlockedPokemons.value.forEach(p => loadTypeForFilter(p.id))
+  }
+})
+
+function openPokedexDetail(n: number) {
+  const unlocked = unlockedPokemons.value.find(p => p.id === n)
+  if (unlocked) selectedPokemon.value = unlocked
+}
 
 const showMart = ref(false)
 
@@ -355,16 +531,6 @@ const showMart = ref(false)
 const catchTrigger   = ref(false)
 const catchPokemonId = ref(1)
 
-interface DifficultyOption {
-  value: 'easy' | 'medium' | 'hard';
-  label: string;
-  icon: string;
-  options: number;
-}
-
-const emit = defineEmits<{ goIntro: [] }>()
-
-// Corregido el tipado estricto para evitar el error de asignación de strings
 const difficulties: DifficultyOption[] = [
   { value: 'easy',   label: 'FÁCIL',   icon: '🌿', options: 2 },
   { value: 'medium', label: 'MEDIA',   icon: '⚡',  options: 4 },
@@ -381,21 +547,6 @@ const attackAnim  = ref<'none' | 'player-attack' | 'enemy-attack'>('none')
 const difficultyCount = computed(() =>
   difficulty.value === 'easy' ? 2 : difficulty.value === 'hard' ? 6 : 4
 )
-
-const {
-  randomPokemon, isLoading, gameStatus,
-  pokemonOptions, checkAnswer, getNextRound,
-  playerHP, wins, losses, streak,
-  exp, level, expToNext, levelProgress, currentTitle,
-  unlockedPokemons, showPokedex,
-  isGameOver, showLevelUp, newBadge, badges, records,
-  timerEnabled, timeLeft, modeType, currentType,
-  hintUsed, hintCharges,
-  EXP_PER_LEVEL,
-  resetGame, useHint,
-    coins,
-  buyPotion, buyHyperPotion, buyHint, buyMasterBall,
-} = usePokemonGame()
 
 const enemyHP    = ref(100)
 const enemyHPPct = ref(100)
@@ -421,7 +572,6 @@ function handleBuy(item: string) {
   if (item === 'hint')        { buyHint(); return }
   if (item === 'masterball')  {
     buyMasterBall(() => {
-      // Elimina la mitad de las opciones incorrectas
       const correct  = pokemonOptions.value.find(p => p.id === randomPokemon.value?.id)!
       const wrongs   = pokemonOptions.value.filter(p => p.id !== randomPokemon.value?.id)
       const toRemove = Math.floor(wrongs.length / 2)
@@ -443,7 +593,7 @@ function openTutorial() {
 }
 
 const battleMessage = computed(() => {
-  if (isGameOver.value)                        return '¡Pikachu no puede más! ¡Has perdido!'
+  if (isGameOver.value)                  return '¡Pikachu no puede más! ¡Has perdido!'
   if (gameStatus.value === GameStatus.Playing) return timerEnabled.value
     ? `⏱ ¡${timeLeft.value}s para responder!`
     : '¡Un Pokémon salvaje aparece! ¿Cuál es su nombre?'
@@ -465,25 +615,17 @@ function handleAnswer(id: number) {
   const correct = id === randomPokemon.value?.id
 
   if (correct) {
-    // 1. Animación de ataque de Pikachu
     attackAnim.value = 'player-attack'
-
     setTimeout(() => {
       enemyHP.value    = 0
       enemyHPPct.value = 0
       attackAnim.value = 'none'
 
-      // 2. Lanza la animación de la Pokéball
       catchPokemonId.value = randomPokemon.value!.id
       catchTrigger.value   = false
-      // Necesitamos un tick para que el watch detecte el cambio
       setTimeout(() => { catchTrigger.value = true }, 30)
-
-      // 3. La lógica real se ejecuta en onCatchDone
     }, 500)
-
   } else {
-    // Fallo: el enemigo ataca a Pikachu
     attackAnim.value = 'enemy-attack'
     setTimeout(() => {
       checkAnswer(id)
@@ -495,7 +637,7 @@ function handleAnswer(id: number) {
 // Se llama cuando termina la animación de la Pokéball
 function onCatchDone() {
   catchTrigger.value = false
-  checkAnswer(randomPokemon.value!.id)  // registra el acierto
+  checkAnswer(randomPokemon.value!.id)
 }
 
 function handleNext() {
@@ -534,6 +676,10 @@ function toggleTimer() {
   if (timerEnabled.value && gameStatus.value === GameStatus.Playing) {
     getNextRound(difficultyCount.value);
   }
+}
+
+function isShinyUnlocked(id: number) {
+  return unlockedPokemons.value.find(p => p.id === id)?.isShiny ?? false
 }
 </script>
 
@@ -935,6 +1081,82 @@ function toggleTimer() {
 .mart-btn:hover {
   background: rgba(255,203,5,0.22);
   transform: translateY(-1px);
+}
+
+/* ── FILTROS POKÉDEX ── */
+.pokedex-filters {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 14px; padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.filter-group { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.filter-btn {
+  font-family: 'Press Start 2P', monospace; font-size: 5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #aaa; border-radius: 20px;
+  padding: 6px 10px; cursor: pointer; transition: all .2s;
+}
+.filter-btn:hover  { border-color: rgba(255,203,5,0.4); color: #fff; }
+.filter-btn.active { background: rgba(255,203,5,0.15); border-color: #ffcb05; color: #ffcb05; }
+
+.filter-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.filter-label {
+  font-family: 'Press Start 2P', monospace; font-size: 5px; color: #888;
+  white-space: nowrap;
+}
+.filter-select {
+  font-family: 'Press Start 2P', monospace; font-size: 5px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; border-radius: 8px; padding: 5px 8px;
+  cursor: pointer;
+}
+.filter-select option { background: #1a1a2e; color: #fff; }
+
+.filter-count {
+  font-family: 'Press Start 2P', monospace; font-size: 5px;
+  color: #555; align-self: flex-end; margin-left: auto;
+}
+
+/* Celdas clickables */
+.pokedex-cell.clickable { cursor: pointer; }
+.pokedex-cell.clickable:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(255,203,5,0.25);
+}
+
+/* Shiny en pokédex */
+.pokedex-cell.shiny {
+  background: rgba(255,203,5,0.25) !important;
+  border-color: #ffcb05 !important;
+  box-shadow: 0 0 10px rgba(255,203,5,0.3);
+}
+
+.pokedex-empty {
+  grid-column: 1 / -1; text-align: center;
+  font-family: 'Press Start 2P', monospace; font-size: 7px;
+  color: #555; padding: 24px;
+}
+
+/* Shiny badge en batalla */
+.shiny-badge {
+  position: absolute; top: 10px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace; font-size: 7px;
+  background: rgba(255,203,5,0.9); color: #1a1a2e;
+  padding: 4px 10px; border-radius: 10px;
+  animation: shinePulse 1s ease infinite;
+}
+@keyframes shinePulse {
+  0%,100% { box-shadow: 0 0 8px rgba(255,203,5,0.6); }
+  50%     { box-shadow: 0 0 20px rgba(255,203,5,1); }
 }
 
 @media(max-width:600px){

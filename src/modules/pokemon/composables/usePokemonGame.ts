@@ -8,6 +8,7 @@ export interface UnlockedPokemon {
   id: number;
   name: string;
   unlockedAt: number;
+  isShiny: boolean;
 }
 
 export interface Badge {
@@ -107,6 +108,7 @@ const expToNext = ref<number>(EXP_PER_LEVEL * level.value);
   const hintCharges = ref(3);
 
   const coins = ref(loadData<number>('coins', 0));
+  const isShinyRound = ref(false);
 
   const randomPokemon = computed(() => {
     const idx = Math.floor(Math.random() * pokemonOptions.value.length);
@@ -186,11 +188,17 @@ const currentTitle = computed(() => {
   };
 
   // ── POKÉDEX ──────────────────────────────────────────
-  const unlockPokemon = (pokemon: Pokemon) => {
-    if (!unlockedPokemons.value.find(p => p.id === pokemon.id)) {
-      unlockedPokemons.value.push({ id: pokemon.id, name: pokemon.name, unlockedAt: level.value });
-    }
-  };
+const unlockPokemon = (pokemon: Pokemon, shiny = false) => {
+  const existing = unlockedPokemons.value.find(p => p.id === pokemon.id);
+  if (!existing) {
+    unlockedPokemons.value.push({
+      id: pokemon.id, name: pokemon.name,
+      unlockedAt: level.value, isShiny: shiny,
+    });
+  } else if (shiny && !existing.isShiny) {
+    existing.isShiny = true;
+  }
+};
 
   // ── FETCH ────────────────────────────────────────────
   const getPokemons = async (): Promise<Pokemon[]> => {
@@ -249,22 +257,23 @@ const currentTitle = computed(() => {
   };
 
   // ── RONDA ────────────────────────────────────────────
-  const getNextRound = (howMany = 4) => {
-    if (isGameOver.value) return;
-    gameStatus.value  = GameStatus.Playing;
-    hintUsed.value    = false;
-    currentType.value = '';
+const getNextRound = (howMany = 4) => {
+  if (isGameOver.value) return;
+  gameStatus.value  = GameStatus.Playing;
+  hintUsed.value    = false;
+  currentType.value = '';
+  isShinyRound.value = Math.random() < 0.01; // 1%
 
-    pokemonOptions.value = pokemons.value.slice(0, howMany);
-    pokemons.value       = pokemons.value.slice(howMany);
+  pokemonOptions.value = pokemons.value.slice(0, howMany);
+  pokemons.value       = pokemons.value.slice(howMany);
 
-    setTimeout(() => {
-      if (modeType.value && randomPokemon.value) {
-        fetchPokemonType(randomPokemon.value.id);
-      }
-      startTimer(); // <-- Esta línea es la que activa el reloj en cada ronda
-    }, 50);
-  };
+  setTimeout(() => {
+    if (modeType.value && randomPokemon.value) {
+      fetchPokemonType(randomPokemon.value.id);
+    }
+    startTimer();
+  }, 50);
+};
 
   // ── PISTA ─────────────────────────────────────────────
   const useHint = () => {
@@ -279,13 +288,13 @@ const checkAnswer = (id: number) => {
   stopTimer();
   const correct = randomPokemon.value?.id === id;
 
-  if (correct) {
-    gameStatus.value = GameStatus.Won;
-    wins.value++;
-    streak.value++;
-    gainExp(EXP_ON_WIN);
-    unlockPokemon(randomPokemon.value!);
-    playerHP.value = Math.min(100, playerHP.value + 5);
+if (correct) {
+  gameStatus.value = GameStatus.Won;
+  wins.value++;
+  streak.value++;
+  gainExp(EXP_ON_WIN);
+  unlockPokemon(randomPokemon.value!, isShinyRound.value); // <-- pasa shiny
+  playerHP.value = Math.min(100, playerHP.value + 5);
 
     // Monedas: +5 base + bonus por racha
     const streakBonus = Math.floor(streak.value / 3);
@@ -376,6 +385,6 @@ const buyMasterBall = (eliminateWrong: () => void) => {
     getNextRound, checkAnswer, resetGame, useHint,
     coins,
     buyPotion, buyHyperPotion, buyHint,
-    buyMasterBall,
+    buyMasterBall,isShinyRound,
   };
 };
