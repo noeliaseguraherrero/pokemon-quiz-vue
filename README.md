@@ -41,12 +41,3 @@ src/
 ├── App.vue             # Componente raíz
 └── main.ts             # Punto de entrada de la aplicación
 ```
-
-## 📸 Vistas de la Aplicación
-
-> [!TIP]
-> Cada sección de la plataforma ha sido diseñada para ser 100% funcional y responsive. Las siguientes capturas muestran los puntos clave, pero el sistema integra una experiencia de navegación mucho más completa.
-
-| **Pantalla Principal del Juego** | **Panel de Dificultades e Interfaz** |
-|:---:|:---:|
-| <img alt="imgJuego" src="image_0ad8dc.jpg" /> | <img alt="imgEstructura" src="image_0adc1e.png" /> |
