@@ -183,9 +183,19 @@ const currentTitle = computed(() => {
     }
   };
 
-  const loseExp = (amount: number) => {
-    exp.value = Math.max(0, exp.value - amount);
-  };
+const loseExp = (amount: number) => {
+  exp.value -= amount;
+
+  // Si la exp baja de 0, baja de nivel
+  while (exp.value < 0 && level.value > 1) {
+    level.value -= 1;
+    expToNext.value = EXP_PER_LEVEL * level.value;
+    exp.value += expToNext.value; // rellena con la exp del nivel anterior
+  }
+
+  // En nivel 1 no puede bajar de 0
+  if (exp.value < 0) exp.value = 0;
+};
 
   // ── POKÉDEX ──────────────────────────────────────────
 const unlockPokemon = (pokemon: Pokemon, shiny = false) => {
@@ -315,30 +325,39 @@ if (correct) {
 };
 
   // ── RESET ────────────────────────────────────────────
-  const resetGame = (howMany = 4) => {
-    stopTimer();
-    wins.value             = 0;
-    losses.value           = 0;
-    streak.value           = 0;
-    exp.value              = 0;
-    level.value            = 1;
-    expToNext.value        = EXP_PER_LEVEL;
-    playerHP.value         = 100;
-    isGameOver.value       = false;
-    gameStatus.value       = GameStatus.Playing;
-    hintUsed.value         = false;
-    hintCharges.value      = 3;
-    currentType.value      = '';
-    unlockedPokemons.value = [];
-    clearData('pokedex');
-    clearData('player_exp');   // <-- Añade esta línea
-    clearData('player_level');
+const resetGame = (howMany = 4) => {
+  stopTimer();
+  wins.value             = 0;
+  losses.value           = 0;
+  streak.value           = 0;
+  exp.value              = 0;
+  level.value            = 1;
+  expToNext.value        = EXP_PER_LEVEL;
+  playerHP.value         = 100;
+  isGameOver.value       = false;
+  gameStatus.value       = GameStatus.Playing;
+  hintUsed.value         = false;
+  hintCharges.value      = 3;
+  currentType.value      = '';
+  isShinyRound.value     = false;
+  coins.value            = 0;
+  unlockedPokemons.value = [];
 
-    getPokemons().then(result => {
-      pokemons.value = result;
-      getNextRound(howMany);
-    });
-  };
+  // Borra insignias
+  badges.value.forEach(b => {
+    b.unlocked = false;
+    clearData('badge_' + b.id);
+  });
+
+  // Borra persistencia
+  clearData('pokedex');
+  clearData('coins');
+
+  getPokemons().then(result => {
+    pokemons.value = result;
+    getNextRound(howMany);
+  });
+};
 
   onMounted(async () => {
     pokemons.value = await getPokemons();

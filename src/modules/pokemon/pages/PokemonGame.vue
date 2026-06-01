@@ -193,10 +193,14 @@
 
       <!-- Nivel máximo de captura -->
       <div class="filter-row">
-        <span class="filter-label">NIVEL CAPTURA ≤:</span>
+        <span class="filter-label">NIVEL CAPTURA:</span>
+        <select class="filter-select" v-model="pokedexLevelMode">
+          <option value="upto">Hasta LV</option>
+          <option value="exact">Exactamente LV</option>
+        </select>
         <select class="filter-select" v-model.number="pokedexLevelFilter">
           <option :value="0">Todos</option>
-          <option v-for="l in [1,2,3,5,8,10,15,20,30]" :key="l" :value="l">{{ l }}</option>
+          <option v-for="l in [1,2,3,4,5,6,7,8,9,10,12,15,20,25,30]" :key="l" :value="l">{{ l }}</option>
         </select>
       </div>
 
@@ -402,7 +406,7 @@ import PokemonOptions from '../components/PokemonOptions.vue'
 import { usePokemonGame } from '../composables/usePokemonGame'
 import { GameStatus } from '../interfaces'
 import PokeballCatch from '../components/PokeballCatch.vue'
-import Pokemart      from '../components/Pokemart.vue'
+import Pokemart      from '../components/PokeMart.vue'
 import PokedexDetail from '../components/PokedexDetail.vue'
 
 // Interfaces de ayuda
@@ -495,23 +499,30 @@ const filteredPokedexIds = computed(() => {
 
     // Filtro estado
     if (pokedexFilter.value === 'unlocked' && !unlocked) return false
-    if (pokedexFilter.value === 'locked'   && unlocked)  return false
+    if (pokedexFilter.value === 'locked'   &&  unlocked) return false
     if (pokedexFilter.value === 'shiny'    && !unlocked?.isShiny) return false
 
-    // Filtro nivel
-    if (pokedexLevelFilter.value > 0 && unlocked) {
-      if (unlocked.unlockedAt > pokedexLevelFilter.value) return false
+    // Filtro nivel: solo aplica a capturados
+    // Muestra los capturados EN ESE NIVEL O ANTES (unlockedAt <= filtro)
+    if (pokedexLevelFilter.value > 0) {
+      if (!unlocked) return false
+      if (pokedexLevelMode.value === 'upto'  && unlocked.unlockedAt > pokedexLevelFilter.value) return false
+      if (pokedexLevelMode.value === 'exact' && unlocked.unlockedAt !== pokedexLevelFilter.value) return false
     }
 
-    // Filtro tipo (solo para desbloqueados con caché)
-    if (pokedexTypeFilter.value !== 'all' && unlocked) {
+    // Filtro tipo: solo aplica a capturados con caché
+    if (pokedexTypeFilter.value !== 'all') {
+      if (!unlocked) return false
       const types = typeCache.value[n]
-      if (types && !types.includes(pokedexTypeFilter.value)) return false
+      if (!types) return true  // aún cargando, lo muestra
+      if (!types.includes(pokedexTypeFilter.value)) return false
     }
 
     return true
   })
 })
+
+const pokedexLevelMode = ref<'upto' | 'exact'>('upto')
 
 // Cuando se abre la pokédex, pre-carga tipos de los desbloqueados
 watch(showPokedex, (val) => {
