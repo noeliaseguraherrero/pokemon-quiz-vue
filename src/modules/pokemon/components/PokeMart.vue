@@ -217,8 +217,8 @@ function handle(item: string) {
 }
 .mart-logo    { display: flex; align-items: center; gap: 10px; flex: 1; }
 .mart-icon    { font-size: 28px; }
-.mart-title   { font-family: 'Press Start 2P', monospace; font-size: 12px; color: #2a75bb; }
-.mart-sub     { font-family: 'Press Start 2P', monospace; font-size: 6px;  color: #aaa; margin-top: 4px; }
+.mart-title   { font-family: 'Press Start 2P', monospace; font-size: 14px; color: #2a75bb; }
+.mart-sub     { font-family: 'Press Start 2P', monospace; font-size: 8px;  color: #aaa; margin-top: 4px; }
 
 .coins-display {
   display: flex; align-items: center; gap: 5px;
@@ -227,8 +227,8 @@ function handle(item: string) {
   border-radius: 20px; padding: 6px 12px;
 }
 .coins-icon { font-size: 14px; }
-.coins-val  { font-family: 'Press Start 2P', monospace; font-size: 12px; color: #ffcb05; }
-.coins-lbl  { font-family: 'Press Start 2P', monospace; font-size: 6px;  color: #aaa; }
+.coins-val  { font-family: 'Press Start 2P', monospace; font-size: 14px; color: #ffcb05; }
+.coins-lbl  { font-family: 'Press Start 2P', monospace; font-size: 8px;  color: #aaa; }
 
 .mart-close {
   background: none; border: none; color: #aaa;
@@ -295,11 +295,11 @@ function handle(item: string) {
 
 /* ── INFO ── */
 .item-info  { flex: 1; display: flex; flex-direction: column; gap: 5px; }
-.item-name  { font-family: 'Press Start 2P', monospace; font-size: 8px;  color: #fff; }
-.item-desc  { font-family: 'Press Start 2P', monospace; font-size: 6px;  color: #aaa; line-height: 1.6; }
+.item-name  { font-family: 'Press Start 2P', monospace; font-size: 10px;  color: #fff; }
+.item-desc  { font-family: 'Press Start 2P', monospace; font-size: 8px;  color: #aaa; line-height: 1.7; }
 .master-name  { color: #cc88ff; }
 .master-warning {
-  font-family: 'Press Start 2P', monospace; font-size: 5px;
+  font-family: 'Press Start 2P', monospace; font-size: 7px;
   color: rgba(160,64,160,0.8); margin-top: 2px;
 }
 
@@ -313,24 +313,24 @@ function handle(item: string) {
 .hp-preview-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
 .hp-preview-fill.gain    { background: rgba(255,255,255,0.35); }
 .hp-preview-text {
-  font-family: 'Press Start 2P', monospace; font-size: 5px; color: #aaa;
+  font-family: 'Press Start 2P', monospace; font-size: 7px; color: #aaa;
 }
 
 /* Hint charges */
 .hint-charges { display: flex; gap: 5px; align-items: center; margin-top: 2px; }
-.hint-dot     { font-size: 10px; color: #ffcb05; }
-.hint-dot.add { font-family: 'Press Start 2P', monospace; font-size: 7px; color: #4caf50; }
+.hint-dot     { font-size: 12px; color: #ffcb05; }
+.hint-dot.add { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #4caf50; }
 
 /* ── COMPRAR ── */
 .item-buy   { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
-.item-price { font-family: 'Press Start 2P', monospace; font-size: 8px; color: #ffcb05; white-space: nowrap; }
-.master-price { color: #cc88ff; }
+.item-price { font-family: 'Press Start 2P', monospace; font-size: 10px; color: #ffcb05; white-space: nowrap; }
+.master-price { color: #cc88ff; font-size: 10px;  }
 
 .buy-btn {
-  font-family: 'Press Start 2P', monospace; font-size: 6px;
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
   background: #2a75bb; color: #fff;
   border: none; border-radius: 20px;
-  padding: 8px 14px; cursor: pointer;
+  padding: 10px 16px; cursor: pointer;
   transition: all 0.2s; white-space: nowrap;
   box-shadow: 0 3px 0 #1a4f8a;
 }
@@ -346,7 +346,7 @@ function handle(item: string) {
   margin: 0 20px 16px;
   padding: 10px 16px;
   border-radius: 10px;
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
   text-align: center; line-height: 1.6;
 }
 .mart-toast.success { background: rgba(76,175,80,0.2);  border: 1px solid #4caf50; color: #4caf50; }
