@@ -708,7 +708,7 @@ function isShinyUnlocked(id: number) {
   animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:'Press Start 2P',monospace;font-size:10px;color:#ffcb05;animation:pulse 1.2s ease infinite;}
+.loading-text{font-family:'Press Start 2P',monospace;font-size:13px;color:#ffcb05;animation:pulse 1.2s ease infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 .game-root {
@@ -730,20 +730,20 @@ function isShinyUnlocked(id: number) {
 }
 .tutorial-box{
   background:#0d1117; border:3px solid #ffcb05; border-radius:20px;
-  padding:36px 40px; max-width:420px; width:90%;
+  padding:36px 40px; max-width:460px; width:90%;
   display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center;
 }
 .tut-step-dots{display:flex;gap:8px;margin-bottom:4px;}
-.tut-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);}
+.tut-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);}
 .tut-dot.active{background:#ffcb05;}
-.tut-icon{font-size:44px;}
-.tut-title{font-family:'Press Start 2P',monospace;font-size:11px;color:#ffcb05;line-height:1.5;}
-.tut-desc{font-family:'Press Start 2P',monospace;font-size:7px;color:#ccc;line-height:2;}
+.tut-icon{font-size:48px;}
+.tut-title{font-family:'Press Start 2P',monospace;font-size:13px;color:#ffcb05;line-height:1.6;}
+.tut-desc{font-family:'Press Start 2P',monospace;font-size:9px;color:#ccc;line-height:2.2;}
 .tut-btns{display:flex;gap:12px;margin-top:8px;}
 .tut-btn{
-  font-family:'Press Start 2P',monospace;font-size:8px;
+  font-family:'Press Start 2P',monospace;font-size:10px;
   background:#ffcb05;color:#1a1a2e;border:none;border-radius:20px;
-  padding:12px 20px;cursor:pointer;transition:all .2s;
+  padding:13px 22px;cursor:pointer;transition:all .2s;
   box-shadow:0 3px 0 #b8860b;
 }
 .tut-btn:hover{transform:translateY(-2px);}
@@ -760,18 +760,18 @@ function isShinyUnlocked(id: number) {
   display:flex;flex-direction:column;align-items:center;gap:16px;
   animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
 }
-.gameover-icon{font-size:52px;}
-.gameover-title{font-family:'Press Start 2P',monospace;font-size:22px;color:#e3350d;text-shadow:0 0 20px rgba(227,53,13,.6);}
-.gameover-sub{font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;}
+.gameover-icon{font-size:56px;}
+.gameover-title{font-family:'Press Start 2P',monospace;font-size:24px;color:#e3350d;text-shadow:0 0 20px rgba(227,53,13,.6);}
+.gameover-sub{font-family:'Press Start 2P',monospace;font-size:9px;color:#aaa;}
 .gameover-stats{display:flex;gap:28px;margin:8px 0;}
 .go-stat{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.go-val{font-family:'Press Start 2P',monospace;font-size:20px;}
-.go-lbl{font-family:'Press Start 2P',monospace;font-size:5px;color:#888;}
+.go-val{font-family:'Press Start 2P',monospace;font-size:22px;}
+.go-lbl{font-family:'Press Start 2P',monospace;font-size:7px;color:#888;}
 .go-val.green{color:#4caf50;}.go-val.red{color:#ff4444;}.go-val.yellow{color:#ffcb05;}
 .gameover-btn{
-  font-family:'Press Start 2P',monospace;font-size:9px;
+  font-family:'Press Start 2P',monospace;font-size:11px;
   background:#e3350d;color:#fff;border:none;border-radius:30px;
-  padding:14px 32px;cursor:pointer;transition:all .2s;
+  padding:15px 34px;cursor:pointer;transition:all .2s;
   box-shadow:0 4px 0 #8b1e07;margin-top:8px;
 }
 .gameover-btn:hover{transform:translateY(-2px);}
@@ -788,20 +788,20 @@ function isShinyUnlocked(id: number) {
   display:flex;flex-direction:column;align-items:center;gap:10px;
   animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
 }
-.levelup-icon{font-size:40px;}
-.levelup-title{font-family:'Press Start 2P',monospace;font-size:18px;color:#ffcb05;text-shadow:0 0 20px rgba(255,203,5,.5);}
-.levelup-sub{font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;}
+.levelup-icon{font-size:44px;}
+.levelup-title{font-family:'Press Start 2P',monospace;font-size:20px;color:#ffcb05;text-shadow:0 0 20px rgba(255,203,5,.5);}
+.levelup-sub{font-family:'Press Start 2P',monospace;font-size:9px;color:#aaa;}
 
 /* BADGE TOAST */
 .badge-toast{
   position:fixed;top:20px;right:20px;z-index:250;
   background:#0d1117;border:2px solid #ffcb05;border-radius:12px;
-  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  padding:14px 18px;display:flex;align-items:center;gap:12px;
   box-shadow:0 4px 20px rgba(255,203,5,.3);
 }
-.badge-toast-icon{font-size:28px;}
-.badge-toast-title{font-family:'Press Start 2P',monospace;font-size:6px;color:#ffcb05;}
-.badge-toast-name{font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;margin-top:4px;}
+.badge-toast-icon{font-size:30px;}
+.badge-toast-title{font-family:'Press Start 2P',monospace;font-size:8px;color:#ffcb05;}
+.badge-toast-name{font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;margin-top:4px;}
 
 /* SIDE MENU */
 .side-menu{
@@ -811,8 +811,8 @@ function isShinyUnlocked(id: number) {
 }
 .side-menu.open{left:0;}
 .side-content{padding:24px 20px;display:flex;flex-direction:column;gap:14px;}
-.side-title{font-family:'Press Start 2P',monospace;font-size:10px;color:#ffcb05;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1);}
-.section-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#888;letter-spacing:1px;}
+.side-title{font-family:'Press Start 2P',monospace;font-size:12px;color:#ffcb05;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.1);}
+.section-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#888;letter-spacing:1px;}
 .difficulty-section{display:flex;flex-direction:column;gap:8px;}
 .diff-btn{
   display:flex;align-items:center;gap:10px;
@@ -821,44 +821,45 @@ function isShinyUnlocked(id: number) {
 }
 .diff-btn:hover{border-color:rgba(255,203,5,.4);}
 .diff-btn.active{border-color:#ffcb05;background:rgba(255,203,5,.12);}
-.diff-icon{font-size:18px;}.diff-info{display:flex;flex-direction:column;align-items:flex-start;flex:1;gap:2px;}
-.diff-name{font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;}
-.diff-desc{font-family:'Press Start 2P',monospace;font-size:5px;color:#888;}
-.diff-check{color:#ffcb05;font-size:14px;}
+.diff-icon{font-size:20px;}
+.diff-info{display:flex;flex-direction:column;align-items:flex-start;flex:1;gap:3px;}
+.diff-name{font-family:'Press Start 2P',monospace;font-size:9px;color:#fff;}
+.diff-desc{font-family:'Press Start 2P',monospace;font-size:7px;color:#888;}
+.diff-check{color:#ffcb05;font-size:16px;}
 
 .mode-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
-.mode-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;}
+.mode-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#ccc;}
 .toggle-btn{
-  font-family:'Press Start 2P',monospace;font-size:6px;
+  font-family:'Press Start 2P',monospace;font-size:8px;
   background:rgba(255,255,255,.1);color:#888;border:1px solid rgba(255,255,255,.15);
-  border-radius:20px;padding:5px 10px;cursor:pointer;transition:all .2s;
+  border-radius:20px;padding:6px 12px;cursor:pointer;transition:all .2s;
 }
 .toggle-btn.on{background:rgba(76,175,80,.2);color:#4caf50;border-color:#4caf50;}
 
 .side-divider{height:1px;background:rgba(255,255,255,.08);}
 .side-stats{display:flex;flex-direction:column;gap:8px;}
-.stat-row{display:flex;justify-content:space-between;align-items:center;font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;padding:3px 0;}
-.stat-val{font-size:8px;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;font-family:'Press Start 2P',monospace;font-size:8px;color:#aaa;padding:4px 0;}
+.stat-val{font-size:10px;}
 .stat-val.green{color:#4caf50;}.stat-val.red{color:#ff4444;}.stat-val.yellow{color:#ffcb05;}
 
 .badges-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .badge-cell{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:6px 4px;border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 4px;border-radius:8px;
   background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
   transition:all .2s;
 }
 .badge-cell.unlocked{background:rgba(255,203,5,.1);border-color:rgba(255,203,5,.35);}
-.badge-icon{font-size:18px;filter:grayscale(1) opacity(.3);}
+.badge-icon{font-size:20px;filter:grayscale(1) opacity(.3);}
 .badge-cell.unlocked .badge-icon{filter:none;}
-.badge-name{font-family:'Press Start 2P',monospace;font-size:4px;color:#555;text-align:center;line-height:1.4;}
+.badge-name{font-family:'Press Start 2P',monospace;font-size:6px;color:#555;text-align:center;line-height:1.5;}
 .badge-cell.unlocked .badge-name{color:#ffcb05;}
 
-.reset-btn{font-family:'Press Start 2P',monospace;font-size:7px;background:rgba(227,53,13,.15);color:#e3350d;border:1px solid rgba(227,53,13,.4);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;width:100%;}
+.reset-btn{font-family:'Press Start 2P',monospace;font-size:9px;background:rgba(227,53,13,.15);color:#e3350d;border:1px solid rgba(227,53,13,.4);border-radius:8px;padding:13px;cursor:pointer;transition:all .2s;width:100%;}
 .reset-btn:hover{background:rgba(227,53,13,.25);}
-.home-btn{font-family:'Press Start 2P',monospace;font-size:7px;background:rgba(42,117,187,.15);color:#2a75bb;border:1px solid rgba(42,117,187,.4);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;width:100%;}
+.home-btn{font-family:'Press Start 2P',monospace;font-size:9px;background:rgba(42,117,187,.15);color:#2a75bb;border:1px solid rgba(42,117,187,.4);border-radius:8px;padding:13px;cursor:pointer;transition:all .2s;width:100%;}
 .home-btn:hover{background:rgba(42,117,187,.28);}
-.tut-reopen{font-family:'Press Start 2P',monospace;font-size:7px;background:rgba(255,255,255,.05);color:#aaa;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;width:100%;}
+.tut-reopen{font-family:'Press Start 2P',monospace;font-size:9px;background:rgba(255,255,255,.05);color:#aaa;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:13px;cursor:pointer;transition:all .2s;width:100%;}
 .tut-reopen:hover{background:rgba(255,255,255,.1);}
 
 .menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;}
@@ -868,81 +869,132 @@ function isShinyUnlocked(id: number) {
 
 /* HEADER */
 .game-header{width:100%;max-width:900px;display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
-.hamburger{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer;transition:all .2s;}
+.hamburger{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:8px;padding:9px 13px;font-size:20px;cursor:pointer;transition:all .2s;}
 .hamburger:hover{background:rgba(255,255,255,.15);}
-.logo{font-family:'Press Start 2P',monospace;font-size:12px;color:#ffcb05;text-shadow:2px 2px 0 #b8860b;line-height:1.4;white-space:nowrap;}
+.logo{font-family:'Press Start 2P',monospace;font-size:14px;color:#ffcb05;text-shadow:2px 2px 0 #b8860b;line-height:1.4;white-space:nowrap;}
 .logo span{color:#fff;}
 .header-center{flex:1;display:flex;flex-direction:column;gap:5px;min-width:140px;}
 .level-row{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;}
-.level-badge{font-family:'Press Start 2P',monospace;font-size:8px;color:#ffcb05;}
-.title-text{font-family:'Press Start 2P',monospace;font-size:5px;color:#aac8ff;flex:1;text-align:center;}
-.exp-text{font-family:'Press Start 2P',monospace;font-size:5px;color:#aaa;}
-.exp-bar-wrap{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;}
+.level-badge{font-family:'Press Start 2P',monospace;font-size:10px;color:#ffcb05;}
+.title-text{font-family:'Press Start 2P',monospace;font-size:7px;color:#aac8ff;flex:1;text-align:center;}
+.exp-text{font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;}
+.exp-bar-wrap{height:9px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;}
 .exp-bar-fill{height:100%;background:linear-gradient(90deg,#2a75bb,#ffcb05);border-radius:4px;transition:width .5s ease;}
-.pokedex-btn{font-family:'Press Start 2P',monospace;font-size:6px;background:#e3350d;color:#fff;border:none;border-radius:20px;padding:8px 14px;cursor:pointer;transition:all .2s;box-shadow:0 3px 0 #8b1e07;white-space:nowrap;}
+.pokedex-btn{font-family:'Press Start 2P',monospace;font-size:8px;background:#e3350d;color:#fff;border:none;border-radius:20px;padding:10px 16px;cursor:pointer;transition:all .2s;box-shadow:0 3px 0 #8b1e07;white-space:nowrap;}
 .pokedex-btn:hover{transform:translateY(-2px);}
+.mart-btn{
+  font-family:'Press Start 2P',monospace;font-size:8px;
+  background:rgba(255,203,5,0.12);color:#ffcb05;
+  border:1px solid rgba(255,203,5,0.35);border-radius:20px;
+  padding:10px 16px;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.mart-btn:hover{background:rgba(255,203,5,0.22);transform:translateY(-1px);}
 
 /* POKÉDEX */
-.pokedex-overlay{width:100%;max-width:900px;background:#2a2a3e;border:2px solid #e3350d;border-radius:16px;padding:16px;margin-bottom:14px;}
+.pokedex-overlay{
+  width:100%;max-width:900px;
+  background:#2a2a3e;border:2px solid #e3350d;
+  border-radius:16px;padding:16px;margin-bottom:14px;
+}
 .pokedex-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.pokedex-title{font-family:'Press Start 2P',monospace;font-size:12px;color:#ffcb05;}
-.pokedex-subtitle{font-family:'Press Start 2P',monospace;font-size:6px;color:#ccc;flex:1;}
-.close-btn{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;}
-.pokedex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;max-height:400px;overflow-y:auto;}
+.pokedex-title{font-family:'Press Start 2P',monospace;font-size:15px;color:#ffcb05;}
+.pokedex-subtitle{font-family:'Press Start 2P',monospace;font-size:8px;color:#ccc;flex:1;}
+.close-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;}
+
+.pokedex-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+  gap:10px;max-height:420px;
+  overflow-y:auto;overflow-x:hidden;
+  padding:6px 4px 10px 4px;
+  border-radius:0 0 12px 12px;
+}
 .pokedex-grid::-webkit-scrollbar{width:4px;}
 .pokedex-grid::-webkit-scrollbar-thumb{background:#e3350d;border-radius:2px;}
-.pokedex-cell{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:10px;gap:3px;border:1px solid transparent;transition:all .2s;position:relative;}
+
+.pokedex-cell{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 6px;border-radius:10px;gap:4px;
+  border:1px solid transparent;
+  transition:transform 0.15s ease,box-shadow 0.15s ease;
+  position:relative;will-change:transform;
+}
 .pokedex-cell.locked{background:#c8c8d8;border-color:rgba(0,0,0,.1);}
 .pokedex-cell.unlocked{background:rgba(255,203,5,.2);border-color:rgba(255,203,5,.5);}
-.pokedex-cell.unlocked:hover{background:rgba(255,203,5,.32);transform:scale(1.06);}
-.pokedex-cell.shiny{background:rgba(255,203,5,.35);border-color:#ffcb05;box-shadow:0 0 8px rgba(255,203,5,.4);}
-.pokedex-cell img{width:52px;height:52px;image-rendering:pixelated;}
+.pokedex-cell.shiny{background:rgba(255,203,5,.3)!important;border-color:#ffcb05!important;box-shadow:0 0 8px rgba(255,203,5,.3);}
+.pokedex-cell.clickable{cursor:pointer;}
+.pokedex-cell.clickable:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(255,203,5,.25);}
+
+.pokedex-cell img{width:64px;height:64px;image-rendering:pixelated;}
 .pokedex-cell img.silhouette{filter:brightness(0);}
-.cell-number{font-family:'Press Start 2P',monospace;font-size:5px;color:#555;}
-.cell-name{font-family:'Press Start 2P',monospace;font-size:5px;color:#fff;text-align:center;text-transform:capitalize;line-height:1.4;word-break:break-all;}
+
+.cell-number{font-family:'Press Start 2P',monospace;font-size:7px;color:#555;}
+.pokedex-cell.unlocked .cell-number{color:rgba(255,203,5,.7);}
+.pokedex-cell.shiny .cell-number{color:rgba(255,203,5,.9);}
+.cell-name{font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;text-align:center;text-transform:capitalize;line-height:1.4;word-break:break-all;}
 .pokedex-cell.locked .cell-name{color:#333;}
-.cell-level{font-family:'Press Start 2P',monospace;font-size:5px;color:#ffcb05;}
+.cell-level{font-family:'Press Start 2P',monospace;font-size:7px;color:#ffcb05;}
 .shiny-star{position:absolute;top:3px;right:3px;font-size:10px;}
+
+/* FILTROS POKÉDEX */
+.pokedex-filters{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:14px;padding:12px;
+  background:rgba(255,255,255,.03);
+  border-radius:10px;border:1px solid rgba(255,255,255,.06);
+}
+.filter-group{display:flex;flex-wrap:wrap;gap:6px;}
+.filter-btn{
+  font-family:'Press Start 2P',monospace;font-size:7px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  color:#aaa;border-radius:20px;padding:7px 12px;cursor:pointer;transition:all .2s;
+}
+.filter-btn:hover{border-color:rgba(255,203,5,.4);color:#fff;}
+.filter-btn.active{background:rgba(255,203,5,.15);border-color:#ffcb05;color:#ffcb05;}
+.filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#888;white-space:nowrap;}
+.filter-select{
+  font-family:'Press Start 2P',monospace;font-size:7px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+  color:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;
+}
+.filter-select option{background:#1a1a2e;color:#fff;}
+.filter-count{font-family:'Press Start 2P',monospace;font-size:7px;color:#555;align-self:flex-end;margin-left:auto;}
+.pokedex-empty{grid-column:1/-1;text-align:center;font-family:'Press Start 2P',monospace;font-size:8px;color:#555;padding:24px;}
 
 /* BATALLA */
 .battle-scene{
   width:100%;max-width:900px;
   background:linear-gradient(180deg,#5ba3c9 0%,#7fc8e8 40%,#a8d8ea 58%,#5d8a3c 58%,#4a7a2f 100%);
   border-radius:16px;border:3px solid rgba(255,255,255,.2);
-  height:230px;position:relative;overflow:hidden;margin-bottom:12px;
+  height:240px;position:relative;overflow:hidden;margin-bottom:12px;
 }
-.timer-bar-wrap{
-  position:absolute;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,.3);z-index:5;
-}
+.timer-bar-wrap{position:absolute;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,.3);z-index:5;}
 .timer-bar-fill{height:100%;transition:width .9s linear,background .3s;}
-.timer-label{
-  position:absolute;right:8px;top:8px;
-  font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;
-  text-shadow:1px 1px 2px rgba(0,0,0,.8);z-index:5;
-}
-.hp-panel{position:absolute;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:155px;}
-.enemy-panel{top:14px;right:10px;}
-.player-panel-above{position:relative;background:rgba(15,20,40,.88);border-radius:8px;padding:5px 8px;border:1px solid rgba(255,255,255,.15);min-width:130px;margin-bottom:4px;}
-.hp-name{font-family:'Press Start 2P',monospace;font-size:6px;color:#fff;margin-bottom:4px;text-transform:capitalize;}
+.timer-label{position:absolute;right:8px;top:8px;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.8);z-index:5;}
+.hp-panel{position:absolute;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:130px;max-width:48%;}
+.enemy-panel{top:10px;right:8px;}
+.player-panel-above{position:relative;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:120px;max-width:160px;margin-bottom:3px;z-index:2;}
+.hp-name{font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;margin-bottom:4px;text-transform:capitalize;}
 .hp-row{display:flex;align-items:center;gap:5px;}
-.hp-label{font-family:'Press Start 2P',monospace;font-size:5px;color:#ffcb05;min-width:14px;}
-.hp-bar-bg{flex:1;height:6px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
+.hp-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#ffcb05;min-width:16px;}
+.hp-bar-bg{flex:1;height:7px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
 .hp-bar-fill{height:100%;border-radius:3px;transition:width .5s ease,background .5s ease;}
-.hp-value{font-family:'Press Start 2P',monospace;font-size:5px;color:#fff;min-width:28px;text-align:right;}
+.hp-value{font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;min-width:28px;text-align:right;}
 .pokemon-sprite{position:absolute;}
-.pokemon-enemy{right:14%;bottom:35%;}
-.pokemon-player{left:4%;bottom:18%;display:flex;flex-direction:column;align-items:center;}
-.player-img{width:80px;height:80px;image-rendering:pixelated;filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));transform:scaleX(-1);user-select:none;-webkit-user-drag:none;}
+.pokemon-enemy{right:8%;bottom:34%;}
+.pokemon-player{left:2%;bottom:16%;display:flex;flex-direction:column;align-items:center;}
+.player-img{width:72px;height:72px;image-rendering:pixelated;filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));transform:scaleX(-1);user-select:none;-webkit-user-drag:none;}
 .battle-platform{position:absolute;border-radius:50%;background:rgba(0,0,0,.12);}
 .platform-enemy{width:90px;height:18px;right:12%;bottom:32%;}
 .platform-player{width:110px;height:20px;left:3%;bottom:16%;}
-.difficulty-badge{position:absolute;top:10px;left:10px;font-family:'Press Start 2P',monospace;font-size:6px;padding:4px 8px;border-radius:10px;}
+.difficulty-badge{position:absolute;top:10px;left:10px;font-family:'Press Start 2P',monospace;font-size:8px;padding:5px 10px;border-radius:10px;}
 .difficulty-badge.easy{background:rgba(76,175,80,.8);color:#fff;}
 .difficulty-badge.medium{background:rgba(255,203,5,.85);color:#1a1a2e;}
 .difficulty-badge.hard{background:rgba(227,53,13,.85);color:#fff;}
-.shiny-badge{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:7px;background:rgba(255,203,5,.9);color:#1a1a2e;padding:4px 10px;border-radius:10px;animation:shinePulse 1s ease infinite;}
+.shiny-badge{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:8px;background:rgba(255,203,5,.9);color:#1a1a2e;padding:5px 12px;border-radius:10px;animation:shinePulse 1s ease infinite;}
 @keyframes shinePulse{0%,100%{box-shadow:0 0 8px rgba(255,203,5,.6)}50%{box-shadow:0 0 20px rgba(255,203,5,1)}}
-.battle-msg-box{position:absolute;bottom:0;left:0;right:0;background:rgba(15,20,40,.9);border-top:2px solid #ffcb05;padding:6px 12px;font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;line-height:1.5;min-height:32px;display:flex;align-items:center;gap:6px;}
+.battle-msg-box{position:absolute;bottom:0;left:0;right:0;background:rgba(15,20,40,.9);border-top:2px solid #ffcb05;padding:8px 14px;font-family:'Press Start 2P',monospace;font-size:9px;color:#fff;line-height:1.6;min-height:36px;display:flex;align-items:center;gap:6px;}
 .battle-msg-box::before{content:'▶';color:#ffcb05;animation:blink 1s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .shake .player-img{animation:shake .4s ease;}
@@ -951,36 +1003,37 @@ function isShinyUnlocked(id: number) {
 @keyframes enemyHit{0%,100%{opacity:1;transform:translateX(0)}25%{opacity:.3;transform:translateX(10px)}75%{opacity:.3;transform:translateX(-10px)}}
 .result-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,20,40,.95);border-radius:16px;padding:14px 24px;text-align:center;pointer-events:none;border:3px solid #ffcb05;}
 .result-banner.win{border-color:#4caf50;}.result-banner.lose{border-color:#ff4444;}
-.result-icon{font-size:28px;}.result-title{font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;margin-top:4px;}
+.result-icon{font-size:30px;}
+.result-title{font-family:'Press Start 2P',monospace;font-size:12px;color:#fff;margin-top:4px;}
 
 /* HINT */
-.hint-row{width:100%;max-width:900px;display:flex;align-items:center;gap:12px;margin-bottom:8px;min-height:28px;}
-.type-info{font-family:'Press Start 2P',monospace;font-size:7px;color:#aac8ff;}
+.hint-row{width:100%;max-width:900px;display:flex;align-items:center;gap:12px;margin-bottom:8px;min-height:30px;}
+.type-info{font-family:'Press Start 2P',monospace;font-size:9px;color:#aac8ff;}
 .type-info.loading-type{color:#555;}
 .hint-btn{
-  font-family:'Press Start 2P',monospace;font-size:6px;
+  font-family:'Press Start 2P',monospace;font-size:8px;
   background:rgba(255,203,5,.12);color:#ffcb05;
   border:1px solid rgba(255,203,5,.3);border-radius:20px;
-  padding:6px 12px;cursor:pointer;transition:all .2s;margin-left:auto;
+  padding:8px 14px;cursor:pointer;transition:all .2s;margin-left:auto;
 }
 .hint-btn:hover:not(:disabled){background:rgba(255,203,5,.22);}
 .hint-btn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* STREAK */
 .streak-bar{width:100%;max-width:900px;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.streak-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;}
+.streak-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#aaa;}
 .streak-dots{display:flex;gap:5px;}
-.streak-dot{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);transition:all .3s ease;}
+.streak-dot{width:15px;height:15px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);transition:all .3s ease;}
 .streak-dot.filled{background:#ffcb05;border-color:#ffcb05;box-shadow:0 0 8px rgba(255,203,5,.6);animation:dotPop .3s ease;}
 @keyframes dotPop{0%{transform:scale(.5)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
-.exp-label{font-family:'Press Start 2P',monospace;font-size:5px;color:#aaa;margin-left:auto;}
+.exp-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;margin-left:auto;}
 
 /* QUESTION */
 .question-card{width:100%;max-width:900px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 20px;margin-bottom:10px;}
-.question-label{font-family:'Press Start 2P',monospace;font-size:6px;color:#aaa;margin-bottom:6px;}
-.question-text{font-size:17px;font-weight:800;color:#fff;}
+.question-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#aaa;margin-bottom:6px;}
+.question-text{font-size:19px;font-weight:800;color:#fff;}
 
-/* OPCIONES — transición entre rondas */
+/* OPCIONES */
 .round-transition-enter-active{animation:roundIn .35s ease;}
 .round-transition-leave-active{animation:roundOut .2s ease;}
 @keyframes roundIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -990,10 +1043,10 @@ function isShinyUnlocked(id: number) {
 .footer-row{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
 .scores{display:flex;gap:20px;}
 .score-item{text-align:center;}
-.score-num{font-family:'Press Start 2P',monospace;font-size:16px;display:block;}
+.score-num{font-family:'Press Start 2P',monospace;font-size:18px;display:block;}
 .score-num.wins{color:#4caf50;}.score-num.losses{color:#ff4444;}
-.score-lbl{font-family:'Press Start 2P',monospace;font-size:5px;color:#aaa;}
-.next-btn{font-family:'Press Start 2P',monospace;font-size:9px;background:#ffcb05;color:#1a1a2e;border:none;border-radius:30px;padding:14px 28px;cursor:pointer;transition:all .2s;box-shadow:0 4px 0 #b8860b;}
+.score-lbl{font-family:'Press Start 2P',monospace;font-size:7px;color:#aaa;}
+.next-btn{font-family:'Press Start 2P',monospace;font-size:11px;background:#ffcb05;color:#1a1a2e;border:none;border-radius:30px;padding:15px 30px;cursor:pointer;transition:all .2s;box-shadow:0 4px 0 #b8860b;}
 .next-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #b8860b;}
 .next-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #b8860b;}
 
@@ -1010,173 +1063,72 @@ function isShinyUnlocked(id: number) {
 .slide-right-enter-from{opacity:0;transform:translateX(60px);}
 .slide-right-leave-to{opacity:0;transform:translateX(60px);}
 
-/* ── ANIMACIONES DE ATAQUE ── */
-
-/* Pikachu lanza un ataque hacia la derecha */
-.player-attack .player-img {
-  animation: pikachuAttack 0.6s ease forwards;
+/* ANIMACIONES DE ATAQUE */
+.player-attack .player-img{animation:pikachuAttack 0.6s ease forwards;}
+@keyframes pikachuAttack{
+  0%  {transform:scaleX(-1) translateX(0) scale(1);}
+  30% {transform:scaleX(-1) translateX(-30px) scale(1.15);}
+  55% {transform:scaleX(-1) translateX(-80px) scale(1.2);}
+  75% {transform:scaleX(-1) translateX(-60px) scale(1.1);}
+  100%{transform:scaleX(-1) translateX(0) scale(1);}
 }
-@keyframes pikachuAttack {
-  0%   { transform: scaleX(-1) translateX(0)    scale(1); }
-  30%  { transform: scaleX(-1) translateX(-30px) scale(1.15); }
-  55%  { transform: scaleX(-1) translateX(-80px) scale(1.2); }
-  75%  { transform: scaleX(-1) translateX(-60px) scale(1.1); }
-  100% { transform: scaleX(-1) translateX(0)    scale(1); }
+.player-attack .player-img::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,203,5,.6);border-radius:50%;
+  animation:attackFlash 0.4s ease;
 }
-
-/* Flash amarillo en Pikachu al atacar */
-.player-attack .player-img::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: rgba(255, 203, 5, 0.6);
-  border-radius: 50%;
-  animation: attackFlash 0.4s ease;
+@keyframes attackFlash{
+  0%  {opacity:0;transform:scale(.5);}
+  40% {opacity:1;transform:scale(1.4);}
+  100%{opacity:0;transform:scale(1);}
 }
-@keyframes attackFlash {
-  0%   { opacity: 0; transform: scale(0.5); }
-  40%  { opacity: 1; transform: scale(1.4); }
-  100% { opacity: 0; transform: scale(1); }
+.enemy-hit{animation:enemyTakeHit 0.6s ease;}
+@keyframes enemyTakeHit{
+  0%  {transform:translateX(0);filter:none;}
+  20% {transform:translateX(18px);filter:brightness(3) saturate(0);}
+  40% {transform:translateX(-12px);opacity:.5;}
+  60% {transform:translateX(10px);filter:brightness(2);}
+  80% {transform:translateX(-6px);opacity:.8;}
+  100%{transform:translateX(0);opacity:1;filter:none;}
 }
-
-/* El enemigo recibe el golpe */
-.enemy-hit {
-  animation: enemyTakeHit 0.6s ease;
-}
-@keyframes enemyTakeHit {
-  0%   { transform: translateX(0)   opacity(1); filter: none; }
-  20%  { transform: translateX(18px); filter: brightness(3) saturate(0); }
-  40%  { transform: translateX(-12px); opacity: 0.5; }
-  60%  { transform: translateX(10px); filter: brightness(2); }
-  80%  { transform: translateX(-6px); opacity: 0.8; }
-  100% { transform: translateX(0);   opacity: 1; filter: none; }
+.player-hit .player-img{animation:pikachuTakeHit 0.6s ease;}
+@keyframes pikachuTakeHit{
+  0%  {transform:scaleX(-1) translateX(0);filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));}
+  20% {transform:scaleX(-1) translateX(14px);filter:brightness(3) saturate(0);}
+  40% {transform:scaleX(-1) translateX(-10px);opacity:.5;}
+  60% {transform:scaleX(-1) translateX(8px);filter:brightness(2);}
+  80% {transform:scaleX(-1) translateX(-4px);opacity:.8;}
+  100%{transform:scaleX(-1) translateX(0);filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));}
 }
 
-/* Pikachu recibe el golpe */
-.player-hit .player-img {
-  animation: pikachuTakeHit 0.6s ease;
+@media(max-width:480px){
+  .battle-scene{height:220px;}
+  .hp-panel{min-width:110px;padding:4px 6px;}
+  .hp-name{font-size:6px;}
+  .hp-label{font-size:5px;}
+  .hp-value{font-size:5px;min-width:22px;}
+  .hp-bar-bg{height:5px;}
+  .pokemon-enemy{right:5%;bottom:33%;}
+  .pokemon-player{left:1%;bottom:14%;}
+  .player-img{width:60px;height:60px;}
+  .player-panel-above{min-width:100px;}
+  .battle-msg-box{font-size:7px;padding:5px 8px;min-height:28px;}
+  .difficulty-badge{font-size:6px;padding:3px 6px;top:6px;left:6px;}
+  .timer-label{font-size:7px;}
 }
-@keyframes pikachuTakeHit {
-  0%   { transform: scaleX(-1) translateX(0); filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
-  20%  { transform: scaleX(-1) translateX(14px); filter: brightness(3) saturate(0); }
-  40%  { transform: scaleX(-1) translateX(-10px); opacity: 0.5; }
-  60%  { transform: scaleX(-1) translateX(8px); filter: brightness(2); }
-  80%  { transform: scaleX(-1) translateX(-4px); opacity: 0.8; }
-  100% { transform: scaleX(-1) translateX(0); filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+@media(max-width:360px){
+  .battle-scene{height:200px;}
+  .player-img{width:52px;height:52px;}
+  .hp-panel{min-width:95px;}
 }
-
-/* ── POKÉDEX — celdas más grandes ── */
-.pokedex-grid {
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
-  gap: 10px !important;
-}
-.pokedex-cell {
-  padding: 12px 6px !important;
-}
-.pokedex-cell img {
-  width: 72px !important;
-  height: 72px !important;
-}
-.cell-number { font-size: 6px !important; }
-.cell-name   { font-size: 6px !important; }
-.cell-level  { font-size: 6px !important; }
-
-.mart-btn {
-  font-family: 'Press Start 2P', monospace; font-size: 6px;
-  background: rgba(255,203,5,0.12);
-  color: #ffcb05;
-  border: 1px solid rgba(255,203,5,0.35);
-  border-radius: 20px; padding: 8px 14px;
-  cursor: pointer; transition: all 0.2s;
-  white-space: nowrap;
-}
-.mart-btn:hover {
-  background: rgba(255,203,5,0.22);
-  transform: translateY(-1px);
-}
-
-/* ── FILTROS POKÉDEX ── */
-.pokedex-filters {
-  display: flex; flex-direction: column; gap: 10px;
-  margin-bottom: 14px; padding: 12px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
-.filter-group { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.filter-btn {
-  font-family: 'Press Start 2P', monospace; font-size: 5px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #aaa; border-radius: 20px;
-  padding: 6px 10px; cursor: pointer; transition: all .2s;
-}
-.filter-btn:hover  { border-color: rgba(255,203,5,0.4); color: #fff; }
-.filter-btn.active { background: rgba(255,203,5,0.15); border-color: #ffcb05; color: #ffcb05; }
-
-.filter-row {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-}
-.filter-label {
-  font-family: 'Press Start 2P', monospace; font-size: 5px; color: #888;
-  white-space: nowrap;
-}
-.filter-select {
-  font-family: 'Press Start 2P', monospace; font-size: 5px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #fff; border-radius: 8px; padding: 5px 8px;
-  cursor: pointer;
-}
-.filter-select option { background: #1a1a2e; color: #fff; }
-
-.filter-count {
-  font-family: 'Press Start 2P', monospace; font-size: 5px;
-  color: #555; align-self: flex-end; margin-left: auto;
-}
-
-/* Celdas clickables */
-.pokedex-cell.clickable { cursor: pointer; }
-.pokedex-cell.clickable:hover {
-  transform: scale(1.08);
-  box-shadow: 0 4px 16px rgba(255,203,5,0.25);
-}
-
-/* Shiny en pokédex */
-.pokedex-cell.shiny {
-  background: rgba(255,203,5,0.25) !important;
-  border-color: #ffcb05 !important;
-  box-shadow: 0 0 10px rgba(255,203,5,0.3);
-}
-
-.pokedex-empty {
-  grid-column: 1 / -1; text-align: center;
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
-  color: #555; padding: 24px;
-}
-
-/* Shiny badge en batalla */
-.shiny-badge {
-  position: absolute; top: 10px; left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
-  background: rgba(255,203,5,0.9); color: #1a1a2e;
-  padding: 4px 10px; border-radius: 10px;
-  animation: shinePulse 1s ease infinite;
-}
-@keyframes shinePulse {
-  0%,100% { box-shadow: 0 0 8px rgba(255,203,5,0.6); }
-  50%     { box-shadow: 0 0 20px rgba(255,203,5,1); }
-}
-
 @media(max-width:600px){
   .main-content{padding:12px;}
-  .battle-scene{height:200px;}
-  .player-img{width:64px;height:64px;}
-  .question-text{font-size:14px;}
-  .logo{font-size:9px;}
-  .next-btn{font-size:7px;padding:10px 18px;}
+  .question-text{font-size:15px;}
+  .logo{font-size:10px;}
+  .next-btn{font-size:9px;padding:11px 20px;}
   .title-text{display:none;}
+  .pokedex-title{font-size:12px;}
+  .diff-name{font-size:8px;}
+  .cell-name{font-size:6px;}
 }
 </style>
