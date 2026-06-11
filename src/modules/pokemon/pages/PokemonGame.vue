@@ -5,6 +5,7 @@
   </section>
 
   <section v-else class="game-root">
+    <div class="char-accent" :style="{ '--accent': props.character.color }"></div>
     <div class="pokeball-bg"></div>
 
     <transition name="fade">
@@ -131,6 +132,9 @@
 
         <button class="reset-btn"   @click="handleReset">↺ REINICIAR</button>
         <button class="home-btn"    @click="handleGoIntro">⌂ MENÚ PRINCIPAL</button>
+        <button class="char-btn" @click="handleChangeCharacter">
+        👤 CAMBIAR PERSONAJE
+      </button>
         <button class="tut-reopen" @click="openTutorial">? TUTORIAL</button>
       </div>
     </aside>
@@ -141,7 +145,10 @@
 
       <header class="game-header">
         <button class="hamburger" @click="menuOpen = !menuOpen">☰</button>
-        <div class="logo">POKÉ<span>QUIZ</span></div>
+        <div class="logo" :style="{ color: props.character.color }">
+          POKÉ<span style="color:#fff">QUIZ</span>
+          <div class="char-tag">{{ props.character.name }}</div>
+        </div>
         <div class="header-center">
           <div class="level-row">
             <span class="level-badge">LV.{{ level }}</span>
@@ -280,8 +287,9 @@
             'player-attack': attackAnim === 'player-attack',
             'player-hit':    attackAnim === 'enemy-attack',
           }">
+
           <div class="hp-panel player-panel-above">
-            <div class="hp-name">PIKACHU</div>
+            <div class="hp-name">{{ props.character.name }}</div>
             <div class="hp-row">
               <span class="hp-label">HP</span>
               <div class="hp-bar-bg">
@@ -292,9 +300,12 @@
               <span class="hp-value">{{ playerHP }}</span>
             </div>
           </div>
-          <img class="player-img"
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg"
-            alt="Pikachu" />
+
+                    <img class="player-img"
+            :src="props.character.sprite"
+            :alt="props.character.name"
+          />
+
         </div>
 
         <div class="battle-platform platform-enemy"></div>
@@ -408,6 +419,15 @@ import { GameStatus } from '../interfaces'
 import PokeballCatch from '../components/PokeballCatch.vue'
 import Pokemart      from '../components/PokeMart.vue'
 import PokedexDetail from '../components/PokedexDetail.vue'
+import type { Character } from '../composables/useCharacters'
+
+interface Props { character: Character }
+const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  goIntro:         []
+  changeCharacter: []
+}>()
 
 // Interfaces de ayuda
 interface DifficultyOption {
@@ -432,8 +452,6 @@ interface FilterOption {
   l: string
 }
 
-const emit = defineEmits<{ goIntro: [] }>()
-
 // SOLUCIONADO 4: Traemos primero usePokemonGame para que showPokedex exista antes de usar su watch
 const {
   randomPokemon, isLoading, gameStatus,
@@ -449,7 +467,7 @@ const {
   coins,
   buyPotion, buyHyperPotion, buyHint, buyMasterBall
   // SOLUCIONADO 6: Quitamos 'isShinyRound' ya que no se usaba en el archivo
-} = usePokemonGame()
+} = usePokemonGame(props.character)
 
 // Pokédex filtros y detalle
 const pokedexFilter  = ref<PokedexFilterType>('all')
@@ -590,6 +608,11 @@ function handleBuy(item: string) {
       pokemonOptions.value = [...keep, correct].sort(() => Math.random() - 0.5)
     })
   }
+}
+
+function handleChangeCharacter() {
+  menuOpen.value = false
+  emit('changeCharacter')
 }
 
 function tutNext() {
@@ -962,49 +985,109 @@ function isShinyUnlocked(id: number) {
 .filter-count{font-family:'Press Start 2P',monospace;font-size:7px;color:#555;align-self:flex-end;margin-left:auto;}
 .pokedex-empty{grid-column:1/-1;text-align:center;font-family:'Press Start 2P',monospace;font-size:8px;color:#555;padding:24px;}
 
-/* BATALLA */
-.battle-scene{
-  width:100%;max-width:900px;
-  background:linear-gradient(180deg,#5ba3c9 0%,#7fc8e8 40%,#a8d8ea 58%,#5d8a3c 58%,#4a7a2f 100%);
-  border-radius:16px;border:3px solid rgba(255,255,255,.2);
-  height:240px;position:relative;overflow:hidden;margin-bottom:12px;
+.battle-scene {
+  width: 100%; max-width: 900px;
+  background: linear-gradient(180deg, #5ba3c9 0%, #7fc8e8 40%, #a8d8ea 55%, #5d8a3c 55%, #4a7a2f 100%);
+  border-radius: 16px; border: 3px solid rgba(255,255,255,.2);
+  height: 290px; position: relative; overflow: hidden; margin-bottom: 12px;
 }
-.timer-bar-wrap{position:absolute;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,.3);z-index:5;}
-.timer-bar-fill{height:100%;transition:width .9s linear,background .3s;}
-.timer-label{position:absolute;right:8px;top:8px;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.8);z-index:5;}
-.hp-panel{position:absolute;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:130px;max-width:48%;}
-.enemy-panel{top:10px;right:8px;}
-.player-panel-above{position:relative;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:120px;max-width:160px;margin-bottom:3px;z-index:2;}
-.hp-name{font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;margin-bottom:4px;text-transform:capitalize;}
-.hp-row{display:flex;align-items:center;gap:5px;}
-.hp-label{font-family:'Press Start 2P',monospace;font-size:7px;color:#ffcb05;min-width:16px;}
-.hp-bar-bg{flex:1;height:7px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
-.hp-bar-fill{height:100%;border-radius:3px;transition:width .5s ease,background .5s ease;}
-.hp-value{font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;min-width:28px;text-align:right;}
-.pokemon-sprite{position:absolute;}
-.pokemon-enemy{right:8%;bottom:34%;}
-.pokemon-player{left:2%;bottom:16%;display:flex;flex-direction:column;align-items:center;}
-.player-img{width:72px;height:72px;image-rendering:pixelated;filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));transform:scaleX(-1);user-select:none;-webkit-user-drag:none;}
-.battle-platform{position:absolute;border-radius:50%;background:rgba(0,0,0,.12);}
-.platform-enemy{width:90px;height:18px;right:12%;bottom:32%;}
-.platform-player{width:110px;height:20px;left:3%;bottom:16%;}
-.difficulty-badge{position:absolute;top:10px;left:10px;font-family:'Press Start 2P',monospace;font-size:8px;padding:5px 10px;border-radius:10px;}
-.difficulty-badge.easy{background:rgba(76,175,80,.8);color:#fff;}
-.difficulty-badge.medium{background:rgba(255,203,5,.85);color:#1a1a2e;}
-.difficulty-badge.hard{background:rgba(227,53,13,.85);color:#fff;}
-.shiny-badge{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:8px;background:rgba(255,203,5,.9);color:#1a1a2e;padding:5px 12px;border-radius:10px;animation:shinePulse 1s ease infinite;}
-@keyframes shinePulse{0%,100%{box-shadow:0 0 8px rgba(255,203,5,.6)}50%{box-shadow:0 0 20px rgba(255,203,5,1)}}
-.battle-msg-box{position:absolute;bottom:0;left:0;right:0;background:rgba(15,20,40,.9);border-top:2px solid #ffcb05;padding:8px 14px;font-family:'Press Start 2P',monospace;font-size:9px;color:#fff;line-height:1.6;min-height:36px;display:flex;align-items:center;gap:6px;}
-.battle-msg-box::before{content:'▶';color:#ffcb05;animation:blink 1s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.shake .player-img{animation:shake .4s ease;}
-@keyframes shake{0%,100%{transform:scaleX(-1) translateX(0)}25%{transform:scaleX(-1) translateX(-8px)}75%{transform:scaleX(-1) translateX(8px)}}
-.enemy-hit{animation:enemyHit .4s ease;}
-@keyframes enemyHit{0%,100%{opacity:1;transform:translateX(0)}25%{opacity:.3;transform:translateX(10px)}75%{opacity:.3;transform:translateX(-10px)}}
-.result-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,20,40,.95);border-radius:16px;padding:14px 24px;text-align:center;pointer-events:none;border:3px solid #ffcb05;}
-.result-banner.win{border-color:#4caf50;}.result-banner.lose{border-color:#ff4444;}
-.result-icon{font-size:30px;}
-.result-title{font-family:'Press Start 2P',monospace;font-size:12px;color:#fff;margin-top:4px;}
+
+.timer-bar-wrap { position:absolute;top:0;left:0;right:0;height:6px;background:rgba(0,0,0,.3);z-index:5; }
+.timer-bar-fill { height:100%;transition:width .9s linear,background .3s; }
+.timer-label { position:absolute;right:8px;top:8px;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.8);z-index:5; }
+
+.hp-panel { position:absolute;background:rgba(15,20,40,.88);border-radius:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.15);min-width:150px;max-width:48%; }
+.enemy-panel { 
+  top: 24px; 
+  right: 100px;          /* 🌟 Desplazada a la izquierda para encajar con el Pokémon (antes 12px) */
+}
+.player-panel-above {
+  position: relative;
+  right: 40px;           /* 🌟 Mueve la barra 25px hacia la izquierda respecto al personaje */
+  background: rgba(15,20,40,.88);
+  border-radius: 8px; 
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  min-width: 130px; 
+  max-width: 160px;
+  margin-bottom: 4px; 
+  z-index: 2;
+}
+
+.hp-name { font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;margin-bottom:3px;text-transform:capitalize; }
+.hp-row  { display:flex;align-items:center;gap:5px; }
+.hp-label{ font-family:'Press Start 2P',monospace;font-size:6px;color:#ffcb05;min-width:16px; }
+.hp-bar-bg{ flex:1;height:7px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden; }
+.hp-bar-fill{ height:100%;border-radius:3px;transition:width .5s ease,background .5s ease; }
+.hp-value{ font-family:'Press Start 2P',monospace;font-size:6px;color:#fff;min-width:28px;text-align:right; }
+
+.pokemon-sprite { position:absolute; }
+.pokemon-enemy  { 
+  right: 20%;           /* 🌟 Movido a la izquierda (antes 10%) */
+  bottom: 28%; 
+}
+
+.pokemon-enemy :deep(img),
+.pokemon-enemy :deep(.pokemon-img) {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+.pokemon-player {
+  position: absolute;
+  left: 18%;             /* 🌟 Movido a la derecha (antes 8%) */
+  bottom: 16%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.player-img {
+  width: 180px; height: 180px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 6px 6px rgba(0,0,0,.5));
+  user-select: none; -webkit-user-drag: none;
+}
+
+.battle-platform { position:absolute;border-radius:50%;background:rgba(0,0,0,.12); }
+.platform-player { 
+  width: 160px; 
+  height: 26px; 
+  left: 15%;            /* 🌟 Acompaña al jugador a la derecha (antes 5%) */
+  bottom: 14%; 
+}
+.platform-enemy  { 
+  width: 110px; 
+  height: 20px; 
+  right: 20%;           /* 🌟 Acompaña al enemigo a la izquierda (antes 10%) */
+  bottom: 25%; 
+}
+
+.difficulty-badge { position:absolute;top:12px;left:12px;font-family:'Press Start 2P',monospace;font-size:8px;padding:5px 10px;border-radius:10px; }
+.difficulty-badge.easy   { background:rgba(76,175,80,.8);color:#fff; }
+.difficulty-badge.medium { background:rgba(255,203,5,.85);color:#1a1a2e; }
+.difficulty-badge.hard   { background:rgba(227,53,13,.85);color:#fff; }
+
+.shiny-badge { position:absolute;top:12px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:8px;background:rgba(255,203,5,.9);color:#1a1a2e;padding:5px 12px;border-radius:10px;animation:shinePulse 1s ease infinite; }
+@keyframes shinePulse { 0%,100%{box-shadow:0 0 8px rgba(255,203,5,.6)}50%{box-shadow:0 0 20px rgba(255,203,5,1)} }
+
+.battle-msg-box { position:absolute;bottom:0;left:0;right:0;background:rgba(15,20,40,.9);border-top:2px solid #ffcb05;padding:8px 14px;font-family:'Press Start 2P',monospace;font-size:9px;color:#fff;line-height:1.6;min-height:36px;display:flex;align-items:center;gap:6px; }
+.battle-msg-box::before { content:'▶';color:#ffcb05;animation:blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+.shake .player-img    { animation:trainerShake .4s ease; }
+@keyframes trainerShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+
+.enemy-hit { animation:enemyHit .4s ease; }
+@keyframes enemyHit { 0%,100%{opacity:1;transform:translateX(0)} 25%{opacity:.3;transform:translateX(12px)} 75%{opacity:.3;transform:translateX(-12px)} }
+
+.result-banner { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,20,40,.95);border-radius:16px;padding:14px 24px;text-align:center;pointer-events:none;border:3px solid #ffcb05; }
+.result-banner.win  { border-color:#4caf50; }
+.result-banner.lose { border-color:#ff4444; }
+.result-icon  { font-size:30px; }
+.result-title { font-family:'Press Start 2P',monospace;font-size:12px;color:#fff;margin-top:4px; }
 
 /* HINT */
 .hint-row{width:100%;max-width:900px;display:flex;align-items:center;gap:12px;margin-bottom:8px;min-height:30px;}
@@ -1064,71 +1147,100 @@ function isShinyUnlocked(id: number) {
 .slide-right-leave-to{opacity:0;transform:translateX(60px);}
 
 /* ANIMACIONES DE ATAQUE */
-.player-attack .player-img{animation:pikachuAttack 0.6s ease forwards;}
-@keyframes pikachuAttack{
-  0%  {transform:scaleX(-1) translateX(0) scale(1);}
-  30% {transform:scaleX(-1) translateX(-30px) scale(1.15);}
-  55% {transform:scaleX(-1) translateX(-80px) scale(1.2);}
-  75% {transform:scaleX(-1) translateX(-60px) scale(1.1);}
-  100%{transform:scaleX(-1) translateX(0) scale(1);}
-}
-.player-attack .player-img::after{
-  content:'';position:absolute;inset:0;
-  background:rgba(255,203,5,.6);border-radius:50%;
-  animation:attackFlash 0.4s ease;
-}
-@keyframes attackFlash{
-  0%  {opacity:0;transform:scale(.5);}
-  40% {opacity:1;transform:scale(1.4);}
-  100%{opacity:0;transform:scale(1);}
-}
-.enemy-hit{animation:enemyTakeHit 0.6s ease;}
-@keyframes enemyTakeHit{
-  0%  {transform:translateX(0);filter:none;}
-  20% {transform:translateX(18px);filter:brightness(3) saturate(0);}
-  40% {transform:translateX(-12px);opacity:.5;}
-  60% {transform:translateX(10px);filter:brightness(2);}
-  80% {transform:translateX(-6px);opacity:.8;}
-  100%{transform:translateX(0);opacity:1;filter:none;}
-}
-.player-hit .player-img{animation:pikachuTakeHit 0.6s ease;}
-@keyframes pikachuTakeHit{
-  0%  {transform:scaleX(-1) translateX(0);filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));}
-  20% {transform:scaleX(-1) translateX(14px);filter:brightness(3) saturate(0);}
-  40% {transform:scaleX(-1) translateX(-10px);opacity:.5;}
-  60% {transform:scaleX(-1) translateX(8px);filter:brightness(2);}
-  80% {transform:scaleX(-1) translateX(-4px);opacity:.8;}
-  100%{transform:scaleX(-1) translateX(0);filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4));}
+.player-attack .player-img { animation:trainerAttack 0.6s ease forwards; }
+@keyframes trainerAttack {
+  0%   { transform:translateX(0)    scale(1); }
+  30%  { transform:translateX(40px) scale(1.15); }
+  55%  { transform:translateX(100px) scale(1.2); }
+  75%  { transform:translateX(80px) scale(1.1); }
+  100% { transform:translateX(0)    scale(1); }
 }
 
-@media(max-width:480px){
-  .battle-scene{height:220px;}
-  .hp-panel{min-width:110px;padding:4px 6px;}
-  .hp-name{font-size:6px;}
-  .hp-label{font-size:5px;}
-  .hp-value{font-size:5px;min-width:22px;}
-  .hp-bar-bg{height:5px;}
-  .pokemon-enemy{right:5%;bottom:33%;}
-  .pokemon-player{left:1%;bottom:14%;}
-  .player-img{width:60px;height:60px;}
-  .player-panel-above{min-width:100px;}
-  .battle-msg-box{font-size:7px;padding:5px 8px;min-height:28px;}
-  .difficulty-badge{font-size:6px;padding:3px 6px;top:6px;left:6px;}
-  .timer-label{font-size:7px;}
+.player-hit .player-img {
+  animation: trainerTakeHit 0.6s ease;
 }
-@media(max-width:360px){
-  .battle-scene{height:200px;}
-  .player-img{width:52px;height:52px;}
-  .hp-panel{min-width:95px;}
+@keyframes trainerTakeHit {
+  0%   { transform: translateX(0);    filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+  20%  { transform: translateX(-14px); filter: brightness(3) saturate(0); }
+  40%  { transform: translateX(10px);  opacity: 0.5; }
+  60%  { transform: translateX(-8px);  filter: brightness(2); }
+  80%  { transform: translateX(4px);   opacity: 0.8; }
+  100% { transform: translateX(0);    filter: drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
 }
-@media(max-width:600px){
-  .main-content{padding:12px;}
-  .question-text{font-size:15px;}
-  .logo{font-size:10px;}
-  .next-btn{font-size:9px;padding:11px 20px;}
-  .title-text{display:none;}
-  .pokedex-title{font-size:12px;}
-  .diff-name{font-size:8px;}
-  .cell-name{font-size:6px;}
+
+/* Shake también sin scaleX */
+.shake .player-img {
+  animation: trainerShake 0.4s ease;
+}
+@keyframes trainerShake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-8px); }
+  75%     { transform: translateX(8px); }
+}
+.player-attack .player-img::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(255,203,5,.6); border-radius:50%;
+  animation:attackFlash 0.4s ease;
+}
+@keyframes attackFlash {
+  0%   { opacity:0;transform:scale(.5); }
+  40%  { opacity:1;transform:scale(1.4); }
+  100% { opacity:0;transform:scale(1); }
+}
+.enemy-hit { animation:enemyTakeHit 0.6s ease; }
+@keyframes enemyTakeHit {
+  0%   { transform:translateX(0);filter:none; }
+  20%  { transform:translateX(18px);filter:brightness(3) saturate(0); }
+  40%  { transform:translateX(-12px);opacity:.5; }
+  60%  { transform:translateX(10px);filter:brightness(2); }
+  80%  { transform:translateX(-6px);opacity:.8; }
+  100% { transform:translateX(0);opacity:1;filter:none; }
+}
+.player-hit .player-img { animation:trainerTakeHit 0.6s ease; }
+@keyframes trainerTakeHit {
+  0%   { transform:translateX(0);    filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+  20%  { transform:translateX(-14px);filter:brightness(3) saturate(0); }
+  40%  { transform:translateX(10px); opacity:0.5; }
+  60%  { transform:translateX(-8px); filter:brightness(2); }
+  80%  { transform:translateX(4px);  opacity:0.8; }
+  100% { transform:translateX(0);    filter:drop-shadow(2px 4px 4px rgba(0,0,0,.4)); }
+}
+
+.char-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px; color: #aaa; margin-top: 3px;
+}
+.char-btn {
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  background: rgba(255,255,255,0.05); color: #ccc;
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+  padding: 13px; cursor: pointer; transition: all .2s; width: 100%;
+}
+.char-btn:hover { background: rgba(255,255,255,0.1); }
+
+@media(max-width:600px) {
+  .battle-scene    { height: 280px; }
+  .player-img      { width: 140px; height: 140px; }
+  .platform-player { width: 130px; }
+  .pokemon-player  { left: 4%; bottom: 8%; }
+  .battle-msg-box { font-size:7px; }
+}
+@media(max-width:480px) {
+  .hp-panel       { min-width:120px;padding:4px 8px; }
+  .hp-name        { font-size:6px; }
+  .hp-label       { font-size:5px; }
+  .hp-value       { font-size:5px;min-width:22px; }
+  .difficulty-badge { font-size:6px;padding:3px 6px; }
+  .timer-label    { font-size:7px; }
+  .battle-scene    { height: 250px; }
+  .player-img      { width: 110px; height: 110px; }
+  .platform-player { width: 110px; }
+  .pokemon-player  { left: 2%; bottom: 6%; }
+  .player-panel-above { min-width: 110px; }
+}
+@media(max-width:360px) {
+  .battle-scene    { height: 220px; }
+  .player-img      { width: 90px; height: 90px; }
+  .hp-panel       { min-width:100px; }
 }
 </style>

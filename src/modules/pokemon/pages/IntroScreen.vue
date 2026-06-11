@@ -139,13 +139,13 @@ function handleStart() {
 .logo-block { text-align: center; }
 .logo-sub {
   font-family: 'Press Start 2P', monospace;
-  font-size: 11px; color: #aac8ff; letter-spacing: 3px;
+  font-size: 13px; color: #aac8ff; letter-spacing: 3px;
   margin-bottom: 10px;
   animation: fadeSlideDown 0.7s ease both;
 }
 .logo-main {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(22px, 5vw, 44px);
+  font-size: clamp(26px, 5vw, 48px);
   color: #ffcb05;
   text-shadow: 4px 4px 0 #b8860b, 0 0 40px rgba(255,203,5,0.4);
   animation: fadeSlideDown 0.7s 0.15s ease both;
@@ -246,7 +246,7 @@ function handleStart() {
 
 .start-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 9px; color: #ffcb05;
+  font-size: 11px; color: #ffcb05;
   letter-spacing: 1px;
   animation: labelBlink 1.5s ease infinite;
   transition: opacity 0.2s;
@@ -260,8 +260,8 @@ function handleStart() {
 /* ── DESCRIPCIÓN ── */
 .intro-desc {
   font-family: 'Press Start 2P', monospace;
-  font-size: 6px; color: #7a9cc8;
-  text-align: center; line-height: 2;
+  font-size: 8px; color: #7a9cc8;
+  text-align: center; line-height: 2.2;
   max-width: 380px;
   animation: fadeIn 0.7s 0.6s ease both;
   transition: opacity 0.3s;

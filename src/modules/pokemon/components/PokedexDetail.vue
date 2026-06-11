@@ -247,24 +247,24 @@ watch(() => props.pokemon, (val) => {
 .detail-header { text-align: center; margin-bottom: 16px; }
 .detail-number {
   font-family: 'Press Start 2P', monospace;
-  font-size: 8px; color: #666; margin-bottom: 4px;
+  font-size: 10px; color: #666; margin-bottom: 4px;
 }
 .detail-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 14px; color: #fff; margin-bottom: 10px;
+  font-size: 16px; color: #fff; margin-bottom: 10px;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   flex-wrap: wrap;
 }
 .shiny-tag {
-  font-size: 8px; color: #ffcb05;
+  font-size: 10px; color: #ffcb05;
   background: rgba(255,203,5,0.15);
   border: 1px solid rgba(255,203,5,0.4);
   padding: 3px 8px; border-radius: 10px;
 }
 .detail-types { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .type-chip {
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
-  padding: 5px 12px; border-radius: 20px; color: #fff;
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
+  padding: 6px 14px; border-radius: 20px; color: #fff;
 }
 .normal   { background: #A8A878; }
 .fuego    { background: #F08030; }
@@ -299,13 +299,13 @@ watch(() => props.pokemon, (val) => {
 .sprite-box img { width: 96px; height: 96px; image-rendering: pixelated; }
 .shiny-box { border-color: rgba(255,203,5,0.35); background: rgba(255,203,5,0.06); }
 .sprite-label {
-  font-family: 'Press Start 2P', monospace; font-size: 5px; color: #aaa;
+  font-family: 'Press Start 2P', monospace; font-size: 7px; color: #aaa;
 }
 
 /* Descripción */
 .detail-desc {
-  font-family: 'Nunito', sans-serif; font-size: 13px;
-  color: #ccc; line-height: 1.7; text-align: center;
+  font-family: 'Nunito', sans-serif; font-size: 14px;
+  color: #ccc; line-height: 1.8; text-align: center;
   font-style: italic; padding: 12px 16px;
   background: rgba(255,255,255,0.03);
   border-radius: 10px; margin-bottom: 16px;
@@ -325,22 +325,22 @@ watch(() => props.pokemon, (val) => {
   align-items: center; gap: 4px; padding: 14px 8px;
 }
 .phys-icon { font-size: 18px; }
-.phys-val  { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #fff; }
-.phys-lbl  { font-family: 'Press Start 2P', monospace; font-size: 5px; color: #888; }
+.phys-val  { font-family: 'Press Start 2P', monospace; font-size: 11px; color: #fff; }
+.phys-lbl  { font-family: 'Press Start 2P', monospace; font-size: 7px; color: #888; }
 .phys-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; }
 
 /* Stats combate */
 .detail-combat { display: flex; flex-direction: column; gap: 8px; }
 .section-label {
-  font-family: 'Press Start 2P', monospace; font-size: 6px;
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
   color: #888; letter-spacing: 1px; margin-bottom: 4px;
 }
 .stat-row-bar {
   display: flex; align-items: center; gap: 8px;
 }
 .stat-name {
-  font-family: 'Press Start 2P', monospace; font-size: 6px;
-  color: #aaa; min-width: 40px; text-align: right;
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
+  color: #aaa; min-width: 48px; text-align: right;
 }
 .stat-bar-bg {
   flex: 1; height: 8px; background: rgba(0,0,0,0.4);
@@ -351,7 +351,7 @@ watch(() => props.pokemon, (val) => {
   transition: width .6s ease;
 }
 .stat-val {
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
+  font-family: 'Press Start 2P', monospace; font-size: 9px;
   color: #fff; min-width: 28px; text-align: right;
 }
 

@@ -3,6 +3,8 @@ import { pokemonApi } from "../api/pokemonApi";
 import { GameStatus } from "../interfaces";
 import type { Pokemon, PokemonListResponse } from "../interfaces";
 import { saveData, loadData, clearData } from "./useStorage";
+import { CHARACTERS } from './useCharacters'
+import type { Character } from './useCharacters'
 
 export interface UnlockedPokemon {
   id: number;
@@ -65,7 +67,8 @@ const TYPE_TRANSLATIONS: Record<string, string> = {
   dark:     'Siniestro',steel:   'Acero',     fairy:    'Hada',
 };
 
-export const usePokemonGame = () => {
+export const usePokemonGame = (character: Character) => {
+  const ck = character.storageKey;
   const gameStatus     = ref<GameStatus>(GameStatus.Playing);
   const pokemons       = ref<Pokemon[]>([]);
   const pokemonOptions = ref<Pokemon[]>([]);
@@ -82,15 +85,13 @@ const level     = ref<number>(loadData('player_level', 1));
 // Calculamos el requerimiento basándonos en el nivel cargado
 const expToNext = ref<number>(EXP_PER_LEVEL * level.value);
 
-  const unlockedPokemons = ref<UnlockedPokemon[]>(loadData('pokedex', []));
-  const badges = ref<Badge[]>(
-    BADGE_DEFS.map(b => ({ ...b, unlocked: loadData<boolean>('badge_' + b.id, false) }))
-  );
-  
-  // Usamos la nueva interfaz aquí
-  const records = ref<GameRecord>(loadData('records', {
-    bestStreak: 0, bestLevel: 0, totalWins: 0, totalLosses: 0,
-  }));
+const unlockedPokemons = ref<UnlockedPokemon[]>(loadData('pokedex', [], ck));
+const badges = ref<Badge[]>(
+  BADGE_DEFS.map(b => ({ ...b, unlocked: loadData<boolean>('badge_' + b.id, false, ck) }))
+)
+const records = ref<GameRecord>(loadData('records', {
+  bestStreak: 0, bestLevel: 0, totalWins: 0, totalLosses: 0,
+}, ck));
 
   const showPokedex = ref(false);
 
@@ -107,7 +108,7 @@ const expToNext = ref<number>(EXP_PER_LEVEL * level.value);
   const hintUsed    = ref(false);
   const hintCharges = ref(3);
 
-  const coins = ref(loadData<number>('coins', 0));
+const coins = ref(loadData<number>('coins', 0, ck));
   const isShinyRound = ref(false);
 
   const randomPokemon = computed(() => {
@@ -123,8 +124,8 @@ const currentTitle = computed(() => {
   return [...TITLES].reverse().find(t => level.value >= t.minLevel)?.title ?? TITLES[0]!.title;
 });
 
-  watch(unlockedPokemons, val => saveData('pokedex', val), { deep: true });
-  watch(records,          val => saveData('records', val), { deep: true });
+watch(unlockedPokemons, val => saveData('pokedex', val, ck), { deep: true }),
+watch(records,          val => saveData('records', val, ck), { deep: true });
   // Dentro de usePokemonGame.ts
   watch(timerEnabled, (isEnabled) => {
     if (!isEnabled) {
@@ -138,14 +139,14 @@ const currentTitle = computed(() => {
     updateRecords(); // De paso, aseguramos que el récord de nivel máximo se actualice
   });
 
-  watch(coins, val => saveData('coins', val));
+watch(coins,            val => saveData('coins',   val, ck));
 
   // ── BADGES ───────────────────────────────────────────
   const tryUnlockBadge = (id: string) => {
     const badge = badges.value.find(b => b.id === id);
     if (badge && !badge.unlocked) {
       badge.unlocked = true;
-      saveData('badge_' + id, true);
+      saveData('badge_' + id, true, ck);
       newBadge.value = badge;
       setTimeout(() => { newBadge.value = null; }, 3000);
     }
@@ -344,14 +345,12 @@ const resetGame = (howMany = 4) => {
   unlockedPokemons.value = [];
 
   // Borra insignias
-  badges.value.forEach(b => {
-    b.unlocked = false;
-    clearData('badge_' + b.id);
-  });
-
-  // Borra persistencia
-  clearData('pokedex');
-  clearData('coins');
+badges.value.forEach(b => {
+  b.unlocked = false
+  clearData('badge_' + b.id, ck)
+})
+clearData('pokedex', ck)
+clearData('coins', ck)
 
   getPokemons().then(result => {
     pokemons.value = result;
