@@ -76,7 +76,7 @@ export const usePokemonGame = (character: Character) => {
   const showLevelUp    = ref(false);
   const newBadge       = ref<Badge | null>(null);
 
-  const playerHP  = ref(100);
+const playerHP = ref<number>(loadData('player_hp', 100, ck));
   const wins      = ref(0);
   const losses    = ref(0);
   const streak    = ref(0);
@@ -139,7 +139,9 @@ watch(records,          val => saveData('records', val, ck), { deep: true });
     updateRecords(); // De paso, aseguramos que el récord de nivel máximo se actualice
   });
 
-watch(coins,            val => saveData('coins',   val, ck));
+// Añade esto justo debajo de donde guardas las "coins"
+watch(coins,    val => saveData('coins',   val, ck));
+watch(playerHP, val => saveData('player_hp', val, ck)); // 🌟 ¡NUEVA LÍNEA EXTRA!
 
   // ── BADGES ───────────────────────────────────────────
   const tryUnlockBadge = (id: string) => {
