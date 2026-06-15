@@ -27,7 +27,7 @@
             <div class="item-sprite">🧪</div>
             <div class="item-info">
               <div class="item-name">POCIÓN</div>
-              <div class="item-desc">Restaura 20 HP a Pikachu</div>
+              <div class="item-desc">Restaura 20 HP a {{ characterName }}</div>   
               <div class="item-hp">
                 <div class="hp-preview-bar">
                   <div class="hp-preview-fill current"
@@ -55,7 +55,7 @@
             <div class="item-sprite">💊</div>
             <div class="item-info">
               <div class="item-name">HIPERPOCIÓN</div>
-              <div class="item-desc">Restaura 50 HP a Pikachu</div>
+              <div class="item-desc">Restaura 50 HP a {{ characterName }}</div>
               <div class="item-hp">
                 <div class="hp-preview-bar">
                   <div class="hp-preview-fill current"
@@ -141,14 +141,14 @@
 import { ref } from 'vue'
 
 interface Props {
-  modelValue: boolean
-  coins:       number
-  playerHP:    number
-  hintCharges: number
+  modelValue:    boolean
+  coins:         number
+  playerHP:      number
+  hintCharges:   number
+  characterName: string
 }
 
-// Corregido: Quitamos "const props =" ya que la plantilla lee los valores directamente
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   'update:modelValue': [val: boolean]
@@ -174,8 +174,8 @@ function handle(item: string) {
   emit('buy', item)
 
   const messages: Record<string, string> = {
-    potion:      '¡Pikachu recuperó 20 HP!',
-    hyperpotion: '¡Pikachu recuperó 50 HP!',
+    potion:      `¡${props.characterName} recuperó 20 HP!`,
+    hyperpotion: `¡${props.characterName} recuperó 50 HP!`,
     hint:        '¡+1 carga de pista añadida!',
     masterball:  '¡Opciones incorrectas eliminadas!',
   }

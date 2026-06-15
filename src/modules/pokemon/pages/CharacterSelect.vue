@@ -23,7 +23,6 @@
             <span v-if="getSavedLevel(char)" class="save-badge">
               LV.{{ getSavedLevel(char) }} · {{ getSavedPokedex(char) }}/151
             </span>
-            <span v-else class="save-badge new">NUEVO</span>
           </div>
 
           <div class="char-sprite-wrap">

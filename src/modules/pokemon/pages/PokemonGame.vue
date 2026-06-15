@@ -162,6 +162,7 @@
         <button class="pokedex-btn" @click="showPokedex = !showPokedex">
           📖 {{ unlockedPokemons.length }}/151
         </button>
+        <button class="battle-btn" @click="emit('openBattle')">⚔️ PVE</button>
         <button class="mart-btn" @click="showMart = true">
           🏪 {{ coins }} PC
         </button>
@@ -392,11 +393,12 @@
       @done="onCatchDone"
     />
 
-    <Pokemart
+<Pokemart
   v-model="showMart"
   :coins="coins"
   :player-h-p="playerHP"
   :hint-charges="hintCharges"
+  :character-name="props.character.name"
   @buy="handleBuy"
 />
 
@@ -421,12 +423,15 @@ import Pokemart      from '../components/PokeMart.vue'
 import PokedexDetail from '../components/PokedexDetail.vue'
 import type { Character } from '../composables/useCharacters'
 
+
+
 interface Props { character: Character }
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
   goIntro:         []
   changeCharacter: []
+  openBattle:      [] // <-- Agrega esta línea
 }>()
 
 // Interfaces de ayuda
@@ -586,13 +591,53 @@ const totalExp   = computed(() => exp.value + (level.value - 1) * EXP_PER_LEVEL)
 // Tutorial
 const showTutorial = ref(!localStorage.getItem('pokequiz_tutorial_done'))
 const tutStep      = ref(0)
+
 const tutorialSteps = [
-  { icon: '👁',  title: '¡Adivina el Pokémon!',  desc: 'Se muestra la silueta de un Pokémon. Elige su nombre entre las opciones.' },
-  { icon: '❤️',  title: 'Tu vida importa',        desc: 'Si fallas pierdes 15 HP. Si aciertas recuperas 5 HP. A 0 HP es Game Over.' },
-  { icon: '⬆️',  title: 'Sube de nivel',          desc: 'Cada acierto da 20 EXP. Cada fallo resta 10 EXP.' },
-  { icon: '📖',  title: 'Completa la Pokédex',    desc: 'Cada Pokémon que adivines se añade a tu Pokédex.' },
-  { icon: '💡',  title: 'Usa las pistas',         desc: 'Tienes 3 pistas por partida que revelan el tipo del Pokémon.' },
-  { icon: '🏆',  title: 'Récords e insignias',    desc: 'Consigue logros y bate tus récords desde el menú lateral.' },
+  { 
+    icon: '👤', 
+    title: 'Elige tu Entrenador', 
+    desc: 'Cada personaje tiene su propia partida guardada con su nivel, vida, monedas, Pokédex y estadísticas únicas.' 
+  },
+  { 
+    icon: '👀',  
+    title: '¡Adivina el Pokémon!',  
+    desc: 'Se muestra la silueta de un Pokémon. Elige su nombre entre las opciones.' 
+  },
+  { 
+    icon: '❤️',  
+    title: 'Tu vida importa',        
+    desc: 'Si fallas pierdes 15 HP. Si aciertas recuperas 5 HP. A 0 HP es Game Over.' 
+  },
+  { 
+    icon: '⬆️',  
+    title: 'Sube de nivel',          
+    desc: 'Cada acierto da 20 EXP. Cada fallo resta 10 EXP.' 
+  },
+  { 
+    icon: '🪙',  
+    title: 'Gana Monedas', 
+    desc: 'Cada vez que aciertes un Pokémon, sumarás 5 monedas a tu contador.' 
+  },
+  { 
+    icon: '🏪',  
+    title: 'Visita la Tienda', 
+    desc: 'Usa tus monedas para comprar pociones de vida, pistas extra o eliminar opciones incorrectas para asegurar tu victoria.' 
+  },
+  { 
+    icon: '💡',  
+    title: 'Usa las pistas',         
+    desc: 'Tienes un límite de pistas por partida que revelan el tipo del Pokémon o descartan opciones.' 
+  },
+  { 
+    icon: '📖',  
+    title: 'Completa la Pokédex',    
+    desc: 'Cada Pokémon que adivines se añade a la Pokédex exclusiva de tu personaje actual.' 
+  },
+  { 
+    icon: '🏆',  
+    title: 'Récords e insignias',    
+    desc: 'Consigue logros y bate tus récords desde el menú lateral.' 
+  },
 ]
 
 function handleBuy(item: string) {
@@ -1217,6 +1262,14 @@ function isShinyUnlocked(id: number) {
   padding: 13px; cursor: pointer; transition: all .2s; width: 100%;
 }
 .char-btn:hover { background: rgba(255,255,255,0.1); }
+
+.battle-btn {
+  font-family: 'Press Start 2P', monospace; font-size: 8px;
+  background: rgba(227,53,13,0.15); color: #e3350d;
+  border: 1px solid rgba(227,53,13,0.4); border-radius: 20px;
+  padding: 10px 16px; cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.battle-btn:hover { background: rgba(227,53,13,0.28); transform: translateY(-1px); }
 
 @media(max-width:600px) {
   .battle-scene    { height: 280px; }

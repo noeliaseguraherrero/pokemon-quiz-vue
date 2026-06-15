@@ -1,3 +1,4 @@
+// 1. Interfaz estática (La plantilla del personaje)
 export interface Character {
   id: string
   name: string
@@ -8,6 +9,31 @@ export interface Character {
   storageKey: string    // prefijo para localStorage
 }
 
+// 2. NUEVA: Interfaz del Progreso de la Historia
+export interface StoryProgress {
+  rocketRecruitsDefeated: number
+  rocketBossBeaten: boolean
+  magmaRecruitsDefeated: number
+  magmaBossBeaten: boolean
+  aquaRecruitsDefeated: number
+  aquaBossBeaten: boolean
+  galaxiaRecruitsDefeated: number
+  galaxiaBossBeaten: boolean
+}
+
+// 3. NUEVA: Interfaz completa de la Partida Guardada (Save Slot)
+export interface CharacterSaveData {
+  characterId: string
+  level: number
+  exp: number
+  hp: number
+  maxHp: number
+  coins: number
+  pokedex: number[] // Array de IDs de Pokémon desbloqueados
+  storyProgress: StoryProgress
+}
+
+// Lista estática de personajes disponibles (Se queda igual, pero corregida)
 export const CHARACTERS: Character[] = [
   {
     id: 'red',
@@ -36,13 +62,13 @@ export const CHARACTERS: Character[] = [
     color: '#ffcb05',
     storageKey: 'gold',
   },
-{
+  {
     id: 'lyra',
     name: 'LYRA',
     description: 'La enérgica entrenadora de la región Johto.',
     sprite: new URL('../../../assets/img/lyra.png', import.meta.url).href,
     backSprite: new URL('../../../assets/img/lyra.png', import.meta.url).href,
-    color: '#ff65a3', // Un bonito color rosa/rojo pastel que le va genial
+    color: '#ff65a3',
     storageKey: 'lyra',
   },
   {
@@ -64,3 +90,26 @@ export const CHARACTERS: Character[] = [
     storageKey: 'may',
   },
 ]
+
+// 4. NUEVA: Función helper para crear una partida desde cero
+export function createNewSave(characterId: string): CharacterSaveData {
+  return {
+    characterId,
+    level: 1,
+    exp: 0,
+    hp: 100,
+    maxHp: 100,
+    coins: 0,
+    pokedex: [1, 4, 7], // Pokémon iniciales por defecto (Bulbasaur, Charmander, Squirtle) como ejemplo
+    storyProgress: {
+      rocketRecruitsDefeated: 0,
+      rocketBossBeaten: false,
+      magmaRecruitsDefeated: 0,
+      magmaBossBeaten: false,
+      aquaRecruitsDefeated: 0,
+      aquaBossBeaten: false,
+      galaxiaRecruitsDefeated: 0,
+      galaxiaBossBeaten: false
+    }
+  }
+}
